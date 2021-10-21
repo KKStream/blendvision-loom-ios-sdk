@@ -1,0 +1,11 @@
+framework module KKSPaaS {
+  umbrella header "KKSPaaS.h"
+
+  export *
+  module * { export * }
+}
+
+module KKSPaaS.Swift {
+    header "KKSPaaS-Swift.h"
+    requires objc
+}

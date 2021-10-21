@@ -1,0 +1,11 @@
+framework module KKSNetwork {
+  umbrella header "KKSNetwork.h"
+
+  export *
+  module * { export * }
+}
+
+module KKSNetwork.Swift {
+    header "KKSNetwork-Swift.h"
+    requires objc
+}
