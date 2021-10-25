@@ -1,0 +1,227 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
+// swift-module-flags: -target arm64-apple-ios10-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name KKSNetwork
+import Foundation
+@_exported import KKSNetwork
+import Swift
+import SystemConfiguration
+public protocol KKSDecodableRoot : Swift.Decodable {
+  var errors: [KKSNetwork.KKSGraphQLError]? { get }
+}
+public struct KKSGraphQLError : Swift.Decodable {
+  public var message: Swift.String
+  public var path: [Swift.String]
+  public var extensions: KKSNetwork.KKSGraphQLError.KKSGraphQLErrorExtensions
+  public struct KKSGraphQLErrorExtensions : Swift.Decodable {
+    public var code: Swift.String
+    public var message: Swift.String
+  }
+  public init(from decoder: Swift.Decoder) throws
+}
+extension KKSGraphQLError.KKSGraphQLErrorExtensions {
+  public init(from decoder: Swift.Decoder) throws
+}
+public enum KKSJSONError : Swift.Error {
+  case parsingError
+  case serializationError
+  public static func == (a: KKSNetwork.KKSJSONError, b: KKSNetwork.KKSJSONError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum KKSNetworkError : Swift.String, Swift.Error {
+  case dataNotFound
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension KKSNetworkRequest where Self.ResponseType == Swift.Void {
+  public var responseHandler: (Foundation.Data) throws -> Swift.Void {
+    get
+  }
+}
+extension KKSNetworkRequest where Self.ResponseType : Swift.Decodable {
+  public var responseHandler: (Foundation.Data) throws -> Self.ResponseType {
+    get
+  }
+  public func parsing(data: Foundation.Data?, error: Swift.Error?, completionHandler: @escaping (((Self.ResponseType)?, Swift.Error?) -> Swift.Void))
+}
+open class KKSRetryController {
+  required public init?(count: Swift.Int, delayTime: Foundation.TimeInterval)
+  public func doRetry(_ handler: @escaping (() -> Swift.Void))
+  public func needRetry(_ response: Foundation.URLResponse?, _ error: Swift.Error?) -> Swift.Bool
+  public func cancel()
+  @objc deinit
+}
+public protocol KKSNetworkRequest {
+  associatedtype ResponseType
+  var urlRequest: Foundation.URLRequest? { get }
+  var baseURL: Swift.String { get }
+  var endPoint: Swift.String { get }
+  var httpMethod: KKSNetwork.KKSNetworkMethod { get }
+  var httpHeader: [Swift.String : Swift.String] { get }
+  var bodyParameters: Foundation.Data? { get }
+  var urlQueryParameters: [Swift.String : Swift.String] { get }
+  var responseHandler: (Foundation.Data) throws -> Self.ResponseType { get }
+  var networkClient: KKSNetwork.KKSNetworkClient { get set }
+  func perform(completionHandler: @escaping ((Self.ResponseType?, Swift.Error?) -> Swift.Void))
+  func perform(completionHandler: @escaping ((Self.ResponseType?, Foundation.URLResponse?, Swift.Error?) -> Swift.Void))
+  func cancel()
+}
+extension KKSNetworkRequest {
+  public var urlRequest: Foundation.URLRequest? {
+    get
+  }
+  public var baseURL: Swift.String {
+    get
+  }
+  public var endPoint: Swift.String {
+    get
+  }
+  public var httpHeader: [Swift.String : Swift.String] {
+    get
+  }
+  public var httpMethod: KKSNetwork.KKSNetworkMethod {
+    get
+  }
+  public var bodyParameters: Foundation.Data? {
+    get
+  }
+  public var urlQueryParameters: [Swift.String : Swift.String] {
+    get
+  }
+  public var networkClient: KKSNetwork.KKSNetworkClient {
+    get
+  }
+  public func perform(completionHandler: @escaping ((Self.ResponseType?, Swift.Error?) -> Swift.Void))
+  public func perform(completionHandler: @escaping ((Self.ResponseType?, Foundation.URLResponse?, Swift.Error?) -> Swift.Void))
+  public func cancel()
+}
+public protocol KKSURLRequestConvertible {
+  func asURLRequest() throws -> Foundation.URLRequest
+}
+public class KKSNetworkClient {
+  public var task: Foundation.URLSessionDataTask? {
+    get
+  }
+  public func performRequest<Request>(_ request: Request, _ completionHandler: @escaping ((Foundation.Data?, Foundation.URLResponse?, Swift.Error?) -> Swift.Void)) where Request : KKSNetwork.KKSNetworkRequest
+  public func cancel()
+  public init(_ retryModelController: KKSNetwork.KKSRetryController? = nil)
+  @objc deinit
+}
+public enum ReachabilityError : Swift.Error {
+  case failedToCreateWithAddress(Darwin.sockaddr_in)
+  case failedToCreateWithHostname(Swift.String)
+  case unableToSetCallback
+  case unableToSetDispatchQueue
+  case unableToGetInitialFlags
+}
+@available(*, unavailable, renamed: "Notification.Name.reachabilityChanged")
+public let reachabilityChangedNotification: Foundation.NSNotification.Name
+extension NSNotification.Name {
+  public static let reachabilityChanged: Foundation.Notification.Name
+}
+public class Reachability {
+  public typealias NetworkReachable = (KKSNetwork.Reachability) -> Swift.Void
+  public typealias NetworkUnreachable = (KKSNetwork.Reachability) -> Swift.Void
+  @available(*, unavailable, renamed: "Connection")
+  public enum NetworkStatus : Swift.CustomStringConvertible {
+    case notReachable, reachableViaWiFi, reachableViaWWAN
+    public var description: Swift.String {
+      get
+    }
+    public static func == (a: KKSNetwork.Reachability.NetworkStatus, b: KKSNetwork.Reachability.NetworkStatus) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum Connection : Swift.CustomStringConvertible {
+    case none, wifi, cellular
+    public var description: Swift.String {
+      get
+    }
+    public static func == (a: KKSNetwork.Reachability.Connection, b: KKSNetwork.Reachability.Connection) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var whenReachable: KKSNetwork.Reachability.NetworkReachable?
+  public var whenUnreachable: KKSNetwork.Reachability.NetworkUnreachable?
+  @available(*, deprecated, renamed: "allowsCellularConnection")
+  final public let reachableOnWWAN: Swift.Bool
+  public var allowsCellularConnection: Swift.Bool
+  public var notificationCenter: Foundation.NotificationCenter
+  @available(*, deprecated, renamed: "connection.description")
+  public var currentReachabilityString: Swift.String {
+    get
+  }
+  @available(*, unavailable, renamed: "connection")
+  public var currentReachabilityStatus: KKSNetwork.Reachability.Connection {
+    get
+  }
+  public var connection: KKSNetwork.Reachability.Connection {
+    get
+  }
+  required public init(reachabilityRef: SystemConfiguration.SCNetworkReachability, queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil)
+  convenience public init?(hostname: Swift.String, queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil)
+  convenience public init?(queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil)
+  @objc deinit
+}
+extension Reachability {
+  public func startNotifier() throws
+  public func stopNotifier()
+  @available(*, deprecated, message: "Please use `connection != .none`")
+  public var isReachable: Swift.Bool {
+    get
+  }
+  @available(*, deprecated, message: "Please use `connection == .cellular`")
+  public var isReachableViaWWAN: Swift.Bool {
+    get
+  }
+  @available(*, deprecated, message: "Please use `connection == .wifi`")
+  public var isReachableViaWiFi: Swift.Bool {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+}
+public protocol KKSNetworkConfigProtocol {
+  static var baseURL: Swift.String { get set }
+  static var token: Swift.String { get set }
+}
+public struct KKSNetworkConfig : KKSNetwork.KKSNetworkConfigProtocol {
+  public static var baseURL: Swift.String
+  public static var token: Swift.String
+}
+public enum KKSNetworkMethod : Swift.String {
+  case GET
+  case POST
+  case PUT
+  case PATCH
+  case DELETE
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension KKSNetwork.KKSJSONError : Swift.Equatable {}
+extension KKSNetwork.KKSJSONError : Swift.Hashable {}
+extension KKSNetwork.KKSNetworkError : Swift.Equatable {}
+extension KKSNetwork.KKSNetworkError : Swift.Hashable {}
+extension KKSNetwork.KKSNetworkError : Swift.RawRepresentable {}
+@available(*, unavailable, renamed: "Connection")
+extension KKSNetwork.Reachability.NetworkStatus : Swift.Equatable {}
+@available(*, unavailable, renamed: "Connection")
+extension KKSNetwork.Reachability.NetworkStatus : Swift.Hashable {}
+extension KKSNetwork.Reachability.Connection : Swift.Equatable {}
+extension KKSNetwork.Reachability.Connection : Swift.Hashable {}
+extension KKSNetwork.KKSNetworkMethod : Swift.Equatable {}
+extension KKSNetwork.KKSNetworkMethod : Swift.Hashable {}
+extension KKSNetwork.KKSNetworkMethod : Swift.RawRepresentable {}

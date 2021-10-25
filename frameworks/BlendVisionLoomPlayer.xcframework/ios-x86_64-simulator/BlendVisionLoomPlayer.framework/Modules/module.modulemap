@@ -1,0 +1,11 @@
+framework module BlendVisionLoomPlayer {
+  umbrella header "BlendVisionLoomPlayer.h"
+
+  export *
+  module * { export * }
+}
+
+module BlendVisionLoomPlayer.Swift {
+    header "BlendVisionLoomPlayer-Swift.h"
+    requires objc
+}

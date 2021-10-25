@@ -1,0 +1,154 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
+// swift-module-flags: -target x86_64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name BlendVisionLoomPlayer
+import AVFoundation
+@_exported import BlendVisionLoomPlayer
+import Foundation
+import KKSPaaS
+import Swift
+import UIKit
+public typealias LoomPlayerView = UIKit.UIView
+@_hasMissingDesignatedInitializers final public class LoomPlayer {
+  final public var view: BlendVisionLoomPlayer.LoomPlayerView {
+    get
+  }
+  final public let controller: KKSPaaS.PlayerViewController
+  weak final public var eventHandler: BlendVisionLoomPlayer.PlayerEventHandling?
+  @objc deinit
+}
+extension LoomPlayer {
+  convenience public init(context: BlendVisionLoomPlayer.PlayerContext, contents: [BlendVisionLoomPlayer.VideoContent], startIndex: Swift.Int, eventHandler: BlendVisionLoomPlayer.PlayerEventHandling?)
+}
+extension LoomPlayer {
+  final public func play()
+  final public func pause()
+  final public func rewind()
+  final public func forward()
+  final public func previous()
+  final public func next()
+  final public func seek(to seconds: Foundation.TimeInterval)
+}
+extension LoomPlayer {
+  final public func showPlaybackControlsAndProgressBar()
+  final public func hidePlaybackControlsAndProgressBar()
+}
+extension LoomPlayer {
+  final public var isFullscreen: Swift.Bool {
+    get
+  }
+  final public func enterFullscreen(autoRotate: Swift.Bool)
+  final public func exitFullscreen()
+}
+extension LoomPlayer {
+  final public var isBackgroundPlaybackEnabled: Swift.Bool {
+    get
+    set
+  }
+}
+public class PlayerContext {
+  public enum BarItem : Swift.Equatable {
+    case settings
+    case custom(view: UIKit.UIView?)
+    public static func == (a: BlendVisionLoomPlayer.PlayerContext.BarItem, b: BlendVisionLoomPlayer.PlayerContext.BarItem) -> Swift.Bool
+  }
+  public struct Configuration {
+    public var defaultResolution: Swift.Int?
+    public init(defaultResolution: Swift.Int? = nil)
+  }
+  public var barItems: [BlendVisionLoomPlayer.PlayerContext.BarItem]
+  public init(barItems: [BlendVisionLoomPlayer.PlayerContext.BarItem])
+  @objc deinit
+}
+public enum LoomError : Swift.Error {
+  public struct PlaybackError : Swift.Error {
+    public var code: Swift.String {
+      get
+    }
+    public var message: Swift.String {
+      get
+    }
+  }
+  case playback(BlendVisionLoomPlayer.LoomError.PlaybackError)
+  case startIndexOutOfRange
+  case emptyVideoContents
+  case invalidWindowHierarchy
+}
+extension LoomError : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension LoomError.PlaybackError : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+public struct Configuration {
+  public static var version: Swift.String {
+    get
+  }
+  public static var deviceId: Swift.String? {
+    get
+  }
+}
+public struct VideoContent {
+  public let id: Swift.String
+  public let title: Swift.String
+  public let startTime: Foundation.TimeInterval
+  public let source: BlendVisionLoomPlayer.VideoContent.Source
+  public let drm: BlendVisionLoomPlayer.VideoContent.DRM?
+  public init(id: Swift.String, title: Swift.String, startTime: Foundation.TimeInterval, source: BlendVisionLoomPlayer.VideoContent.Source, drm: BlendVisionLoomPlayer.VideoContent.DRM?)
+}
+extension VideoContent {
+  public struct Source {
+    public let url: Foundation.URL
+    public let thumbnailUrl: Foundation.URL
+    public init(url: Foundation.URL, thumbnailUrl: Foundation.URL)
+  }
+  public struct DRM {
+    public let licenseUrl: Foundation.URL
+    public let certificateUrl: Foundation.URL
+    public let header: [Swift.String : Swift.String]
+    public init(licenseUrl: Foundation.URL, certificateUrl: Foundation.URL, header: [Swift.String : Swift.String])
+  }
+}
+@_hasMissingDesignatedInitializers public class RotationHelper {
+  public static var lockedOrientationMask: UIKit.UIInterfaceOrientationMask? {
+    get
+  }
+  @objc deinit
+}
+public protocol PlayerEventHandling : AnyObject {
+  func didLoad(_ player: BlendVisionLoomPlayer.LoomPlayer)
+  func didEndVideo(_ player: BlendVisionLoomPlayer.LoomPlayer, at index: Swift.Int)
+  func didFail(_ player: BlendVisionLoomPlayer.LoomPlayer?, error: BlendVisionLoomPlayer.LoomError)
+}
+extension PlayerEventHandling {
+  public func didLoad(_ player: BlendVisionLoomPlayer.LoomPlayer)
+  public func didEndVideo(_ player: BlendVisionLoomPlayer.LoomPlayer, at index: Swift.Int)
+  public func didFail(_ player: BlendVisionLoomPlayer.LoomPlayer?, error: BlendVisionLoomPlayer.LoomError)
+}
+@_hasMissingDesignatedInitializers final public class Loom {
+  public static let shared: BlendVisionLoomPlayer.Loom
+  final public func presentPlayer(context: BlendVisionLoomPlayer.PlayerContext, contents: [BlendVisionLoomPlayer.VideoContent], startIndex: Swift.Int, eventHandler: BlendVisionLoomPlayer.PlayerEventHandling?, in viewController: UIKit.UIViewController? = nil, completion: ((BlendVisionLoomPlayer.LoomPlayer?) -> Swift.Void)? = nil)
+  @objc deinit
+}
+public enum LoomEnvironment : Swift.String {
+  public static var `default`: BlendVisionLoomPlayer.LoomEnvironment {
+    get
+  }
+  case dummy
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [BlendVisionLoomPlayer.LoomEnvironment]
+  public typealias RawValue = Swift.String
+  public static var allCases: [BlendVisionLoomPlayer.LoomEnvironment] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension BlendVisionLoomPlayer.LoomEnvironment : Swift.CaseIterable {}
+extension BlendVisionLoomPlayer.LoomEnvironment : Swift.Equatable {}
+extension BlendVisionLoomPlayer.LoomEnvironment : Swift.Hashable {}
+extension BlendVisionLoomPlayer.LoomEnvironment : Swift.RawRepresentable {}
