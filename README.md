@@ -1,4 +1,4 @@
-# BlendVisionLoomPlayer
+# BlendVisionLoomPlayer iOS SDK
 
 BlendVisionLoomPlayer is a Swift library to help you integrate BlendVision Loom player into your iOS app.
 
@@ -14,7 +14,7 @@ To have a quick look at the features of BlendVisionLoomPlayer SDK, try our sampl
 
 ### Minimum Requirements
 
-- Xcode 12.0
+- Xcode 13.1
 - iOS 12.0 (latest 3 versions)
 - Swift 5.0
 
@@ -211,6 +211,10 @@ player.previous()
 player.next()
 
 player.seek(to: seconds)
+
+player.mute()
+
+player.unmute()
 ```
 
 ### UI Control
