@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
+// swift-compiler-version: Apple Swift version 5.5.1 (swiftlang-1300.0.31.4 clang-1300.0.29.6)
 // swift-module-flags: -target arm64-apple-ios12.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name KKSPaaS
 import AVFoundation
 import AVKit
@@ -14,6 +14,7 @@ import KKSNetwork
 import MediaPlayer
 import Swift
 import UIKit
+import _Concurrency
 public enum ItemType : Swift.String {
   case videos
   case lives
@@ -95,7 +96,7 @@ public struct PAASError : Swift.Error {
   public var errorCode: Swift.String
   public var message: Swift.String
 }
-extension PAASError {
+extension KKSPaaS.PAASError {
   public init(_ error: KKSPaaS.ContentError)
   public init(_ error: KKSPaaS.DownloadError)
   public init?(_ response: Foundation.URLResponse?, data: Foundation.Data? = nil)
@@ -113,7 +114,7 @@ public let pLog: KKSPaaS.PLPrioritizingLogSystem
   @objc public func loadAVURLAsset(withPath path: Swift.String) -> AVFoundation.AVURLAsset?
   @objc public func validPersistentKey(resourceLoadingRequest: AVFoundation.AVAssetResourceLoadingRequest, userId: Swift.String) -> Swift.Bool
 }
-extension HLSDownloadManager {
+extension KKSPaaS.HLSDownloadManager {
   public func downloadState(for asset: KKSPaaS.Asset) -> KKSPaaS.Asset.DownloadState
   public func restorePersistenceManager()
   public func pauseDownload(for asset: KKSPaaS.Asset)
@@ -122,12 +123,12 @@ extension HLSDownloadManager {
   public func resumeDownload(for asset: KKSPaaS.Asset)
   public func downloadStream(for asset: KKSPaaS.Asset)
 }
-extension HLSDownloadManager {
+extension KKSPaaS.HLSDownloadManager {
   public func canDownload(for asset: KKSPaaS.Asset) -> Swift.Bool
 }
 public struct FairPlay {
 }
-extension FairPlayEntity {
+extension KKSPaaS.FairPlayEntity {
   @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<KKSPaaS.FairPlayEntity>
   @objc @NSManaged dynamic public var contentKeyIdentifier: Swift.String? {
     @objc get
@@ -148,10 +149,10 @@ public struct DownloadItem : Swift.Decodable {
   public let source: KKSPaaS.PlaybackSource
   public init(from decoder: Swift.Decoder) throws
 }
-extension PlayerViewController : AVKit.AVPictureInPictureControllerDelegate {
-  @objc dynamic public func pictureInPictureController(_ pictureInPictureController: AVKit.AVPictureInPictureController, restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Swift.Bool) -> Swift.Void)
+extension KKSPaaS.PlayerViewController : AVKit.AVPictureInPictureControllerDelegate {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func pictureInPictureController(_ pictureInPictureController: AVKit.AVPictureInPictureController, restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Swift.Bool) -> Swift.Void)
 }
-extension DownloadItemEntity {
+extension KKSPaaS.DownloadItemEntity {
   @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<KKSPaaS.DownloadItemEntity>
   @objc @NSManaged dynamic public var afterFirstPlay: Swift.Int64 {
     @objc get
@@ -272,7 +273,7 @@ public struct PaaSSeason {
   public var videos: [KKSPaaS.DownloadStream]
   public init(season: KKSPaaS.Season, videos: [KKSPaaS.DownloadStream])
 }
-extension KKSDownloader {
+extension KKSPaaS.KKSDownloader {
   public func makeSeasonList(by seriesId: Swift.String) -> [KKSPaaS.PaaSSeason]
   public func makeSeasonList(_ streams: [KKSPaaS.DownloadStream]) -> [KKSPaaS.PaaSSeason]
   public func getNextStreamIfDownloaded(_ stream: KKSPaaS.DownloadStream) -> KKSPaaS.DownloadStream?
@@ -293,7 +294,7 @@ public protocol GoogleCastSessionDelegate : AnyObject {
   func sessionManager(_ castManager: KKSPaaS.GoogleCastManager, didEnd session: GoogleCast.GCKCastSession, withError error: Swift.Error?)
   func sessionManager(_ castManager: KKSPaaS.GoogleCastManager, didFailToStart session: GoogleCast.GCKCastSession, withError error: Swift.Error)
 }
-extension GoogleCastSessionDelegate {
+extension KKSPaaS.GoogleCastSessionDelegate {
   public func sessionManager(_ castManager: KKSPaaS.GoogleCastManager, willStart session: GoogleCast.GCKSession)
   public func sessionManager(_ castManager: KKSPaaS.GoogleCastManager, willResume session: GoogleCast.GCKSession)
   public func sessionManager(_ castManager: KKSPaaS.GoogleCastManager, didResume session: GoogleCast.GCKSession)
@@ -314,7 +315,7 @@ public struct KKSMapBuilder {
   public mutating func remove(for key: Swift.String?)
   public func buildCustomDataString() -> Swift.String
 }
-extension KKSDownloader {
+extension KKSPaaS.KKSDownloader {
   public var hlsDownloader: KKSPaaS.HLSDownloadManager {
     get
   }
@@ -380,7 +381,7 @@ public class Avail : Swift.Decodable {
   @objc deinit
   required public init(from decoder: Swift.Decoder) throws
 }
-extension Avail : Swift.Equatable {
+extension KKSPaaS.Avail : Swift.Equatable {
   public static func == (lhs: KKSPaaS.Avail, rhs: KKSPaaS.Avail) -> Swift.Bool
 }
 public class ADBreak : Swift.Decodable {
@@ -390,20 +391,20 @@ public class ADBreak : Swift.Decodable {
   @objc deinit
   required public init(from decoder: Swift.Decoder) throws
 }
-extension ADBreak : Swift.Equatable {
+extension KKSPaaS.ADBreak : Swift.Equatable {
   public static func == (lhs: KKSPaaS.ADBreak, rhs: KKSPaaS.ADBreak) -> Swift.Bool
 }
 @_hasMissingDesignatedInitializers public class Logger {
   public static let shared: KKSPaaS.Logger
   @objc deinit
 }
-extension Logger {
+extension KKSPaaS.Logger {
   public struct Keys {
     public static let EventName: Swift.String
     public static let EventProperty: Swift.String
   }
 }
-extension NSNotification.Name {
+extension Foundation.NSNotification.Name {
   public static let LogEventNotification: Foundation.Notification.Name
 }
 public enum BarItemType : Swift.String {
@@ -426,7 +427,7 @@ public enum BarItemType : Swift.String {
   public func add(_ subview: UIKit.UIView)
   @objc deinit
 }
-extension PlaybackHandler : KKSPaaS.AppInfoProtocol {
+extension KKSPaaS.PlaybackHandler : KKSPaaS.AppInfoProtocol {
 }
 public enum KKSCoreDataError : Swift.Error {
   case existing
@@ -437,7 +438,7 @@ public enum KKSCoreDataError : Swift.Error {
     get
   }
 }
-extension DownloadInfoEntity {
+extension KKSPaaS.DownloadInfoEntity {
   @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<KKSPaaS.DownloadInfoEntity>
   @objc @NSManaged dynamic public var seriesId: Swift.String {
     @objc get
@@ -499,7 +500,7 @@ public enum DownloadError : Swift.Int, Swift.Error {
     get
   }
 }
-extension PlaybackHandler : KKSPaaS.KKSAVPlayerDelegate {
+extension KKSPaaS.PlaybackHandler : KKSPaaS.KKSAVPlayerDelegate {
   public func player(player: KKSPaaS.KKSAVPlayer, didReceiveCKC loadingRequest: AVFoundation.AVAssetResourceLoadingRequest)
   public func player(player: KKSPaaS.KKSAVPlayer, didChange time: Foundation.TimeInterval, duration: Foundation.TimeInterval)
   public func player(player: KKSPaaS.KKSAVPlayer, didChange state: KKSPaaS.PlayerItemState, for item: KKSPaaS.KKSPlayerItem)
@@ -508,7 +509,7 @@ extension PlaybackHandler : KKSPaaS.KKSAVPlayerDelegate {
   public func playerDidEnterBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
   public func playerDidLeaveBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
 }
-extension GoogleCastManager : GoogleCast.GCKSessionManagerListener {
+extension KKSPaaS.GoogleCastManager : GoogleCast.GCKSessionManagerListener {
   @objc dynamic public func sessionManager(_ sessionManager: GoogleCast.GCKSessionManager, willStart session: GoogleCast.GCKSession)
   @objc dynamic public func sessionManager(_ sessionManager: GoogleCast.GCKSessionManager, didStart session: GoogleCast.GCKSession)
   @objc dynamic public func sessionManager(_ sessionManager: GoogleCast.GCKSessionManager, willResumeSession session: GoogleCast.GCKSession)
@@ -582,7 +583,7 @@ public enum APIClientError : Swift.Error, Swift.Equatable {
   }
   public static func == (a: KKSPaaS.APIClientError, b: KKSPaaS.APIClientError) -> Swift.Bool
 }
-extension APIClientError {
+extension KKSPaaS.APIClientError {
   public var isUnknownError: Swift.Bool {
     get
   }
@@ -632,7 +633,7 @@ extension APIClientError {
     get
   }
 }
-extension APIClientError {
+extension KKSPaaS.APIClientError {
   public var localizedMessage: Swift.String {
     get
   }
@@ -646,7 +647,7 @@ public protocol KKSAVPlayerDelegate : AnyObject {
   func playerDidEnterBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
   func playerDidLeaveBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
 }
-extension KKSAVPlayerDelegate {
+extension KKSPaaS.KKSAVPlayerDelegate {
   public func player(player: KKSPaaS.KKSAVPlayer, didReceiveCKC loadingRequest: AVFoundation.AVAssetResourceLoadingRequest)
   public func player(player: KKSPaaS.KKSAVPlayer, didChange rate: Swift.Float, for item: AVFoundation.AVPlayerItem)
 }
@@ -668,11 +669,15 @@ extension KKSAVPlayerDelegate {
   public var isItemReadyToPlay: Swift.Bool {
     get
   }
+  public var isMuted: Swift.Bool {
+    get
+    set
+  }
 }
-extension KKSAVPlayer : AVFoundation.AVAssetResourceLoaderDelegate {
+extension KKSPaaS.KKSAVPlayer : AVFoundation.AVAssetResourceLoaderDelegate {
   @objc dynamic public func resourceLoader(_ resourceLoader: AVFoundation.AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVFoundation.AVAssetResourceLoadingRequest) -> Swift.Bool
 }
-extension KKSAVPlayer {
+extension KKSPaaS.KKSAVPlayer {
   public var selectedSubtitle: AVFoundation.AVMediaSelectionOption? {
     get
   }
@@ -687,7 +692,7 @@ public struct KKSAssetDownloader {
   public func webVttUrl(_ id: Swift.String) -> Foundation.URL
   public func vttDirectoryUrl(_ id: Swift.String) -> Foundation.URL
 }
-extension PlaybackHandler : KKSPaaS.GoogleCastSessionDelegate {
+extension KKSPaaS.PlaybackHandler : KKSPaaS.GoogleCastSessionDelegate {
   public func sessionManager(_ castManager: KKSPaaS.GoogleCastManager, didStart session: GoogleCast.GCKSession)
   public func sessionManager(_ castManager: KKSPaaS.GoogleCastManager, didStart session: GoogleCast.GCKCastSession)
   public func sessionManager(_ castManager: KKSPaaS.GoogleCastManager, didFailToStart session: GoogleCast.GCKSession, withError error: Swift.Error)
@@ -719,7 +724,7 @@ public protocol PlayerViewControllerDelegate : AnyObject {
 public protocol PlayerViewControllerDAIDelegate : AnyObject {
   func playerViewController(_ controller: KKSPaaS.PlayerViewController, requestLiveStreamWithKey assetKey: Swift.String, videoPlayer: AVFoundation.AVPlayer, adView: UIKit.UIView) -> GoogleInteractiveMediaAds.IMALiveStreamRequest
 }
-extension PlayerViewControllerDelegate {
+extension KKSPaaS.PlayerViewControllerDelegate {
   public func playerViewController(_ controller: KKSPaaS.PlayerViewController?, didReceiveAPI error: KKSPaaS.PAASError)
   public func playerViewController(_ controller: KKSPaaS.PlayerViewController?, didStartCastingWithRequest request: GoogleCast.GCKRequest?)
   public func playerViewController(_ controller: KKSPaaS.PlayerViewController, requestResolutionFromAvailableResource resource: [KKSPaaS.Resolution], current resolution: Swift.Int?) -> KKSPaaS.Resolution?
@@ -792,31 +797,31 @@ public class Throttler {
   public var player: KKSPaaS.KKSAVPlayer!
   @objc deinit
 }
-@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class PaaSSliderPanel : UIKit.UIView {
-  open var gradientView: KKSPaaS.PaaSGradientView {
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) open class PaaSSliderPanel : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) open var gradientView: KKSPaaS.PaaSGradientView {
     get
     set
   }
-  @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
-  public func update(currentTime: Foundation.TimeInterval, duration: Foundation.TimeInterval)
-  public func update(track value: Swift.Float)
-  public func update(currentTime: Foundation.TimeInterval)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) public func update(currentTime: Foundation.TimeInterval, duration: Foundation.TimeInterval)
+  @_Concurrency.MainActor(unsafe) public func update(track value: Swift.Float)
+  @_Concurrency.MainActor(unsafe) public func update(currentTime: Foundation.TimeInterval)
   @objc deinit
 }
-@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers open class PaaSGradientView : UIKit.UIView {
-  @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
-  @objc override dynamic open func layoutSubviews()
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) open class PaaSGradientView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func layoutSubviews()
   @objc deinit
 }
 public protocol AppInfoProtocol {
   var moduleVersion: Swift.String { get }
 }
-extension AppInfoProtocol {
+extension KKSPaaS.AppInfoProtocol {
   public var moduleVersion: Swift.String {
     get
   }
 }
-extension KKSDownloader {
+extension KKSPaaS.KKSDownloader {
   @discardableResult
   public func requestInfo(item id: Swift.String, parameters: [Swift.String : Swift.String], completion: @escaping (KKSPaaS.Result<KKSPaaS.DownloadInfo, KKSPaaS.PAASError>) -> Swift.Void) -> KKSPaaS.DownloadInfoRequest
 }
@@ -849,7 +854,7 @@ public enum PlayerItemState : Swift.String {
   @available(iOS 7.0, *)
   @objc override dynamic public init(asset: AVFoundation.AVAsset, automaticallyLoadedAssetKeys: [Swift.String]?)
 }
-extension KKSPlayerItem {
+extension KKSPaaS.KKSPlayerItem {
   public var isLicenseExpired: Swift.Bool {
     get
   }
@@ -857,7 +862,7 @@ extension KKSPlayerItem {
     get
   }
 }
-extension AVPlayerItem {
+extension AVFoundation.AVPlayerItem {
   public var selectedSubtitle: AVFoundation.AVMediaSelectionOption? {
     get
   }
@@ -888,38 +893,37 @@ extension AVPlayerItem {
   public func useDefaultExpandedViewController()
   @objc deinit
 }
-@objc @_hasMissingDesignatedInitializers public class PlayerView : UIKit.UIView {
-  final public let controller: KKSPaaS.PlayerViewController
-  public var rotateToPortraitWhenDisableFullscreen: Swift.Bool
-  public var enableRemoteCommand: Swift.Bool {
+@objc @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class PlayerView : UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) final public let controller: KKSPaaS.PlayerViewController
+  @_Concurrency.MainActor(unsafe) public var rotateToPortraitWhenDisableFullscreen: Swift.Bool
+  @_Concurrency.MainActor(unsafe) public var enableRemoteCommand: Swift.Bool {
     get
     set
   }
-  public var title: Swift.String? {
+  @_Concurrency.MainActor(unsafe) public var title: Swift.String? {
     get
     set
   }
-  public var barButtonItems: [KKSPaaS.BarButtonItem]? {
+  @_Concurrency.MainActor(unsafe) public var barButtonItems: [KKSPaaS.BarButtonItem]? {
     get
     set
   }
-  public var videoGravity: AVFoundation.AVLayerVideoGravity {
+  @_Concurrency.MainActor(unsafe) public var videoGravity: AVFoundation.AVLayerVideoGravity {
     get
     set
   }
-  public var controlView: UIKit.UIView {
+  @_Concurrency.MainActor(unsafe) public var controlView: UIKit.UIView {
     get
   }
   @objc deinit
-  public init(withVideo video: KKSPaaS.VideoModel? = nil, settingConfig: KKSPaaS.SettingConfig? = nil)
-  @objc override dynamic public func willMove(toSuperview newSuperview: UIKit.UIView?)
-  @objc override dynamic public init(frame: CoreGraphics.CGRect)
+  @_Concurrency.MainActor(unsafe) public init(withVideo video: KKSPaaS.VideoModel? = nil, settingConfig: KKSPaaS.SettingConfig? = nil)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func willMove(toSuperview newSuperview: UIKit.UIView?)
 }
-extension PlayerView {
-  public static var isFullscreen: Swift.Bool {
+extension KKSPaaS.PlayerView {
+  @_Concurrency.MainActor(unsafe) public static var isFullscreen: Swift.Bool {
     get
   }
-  public func toggleFullscreen()
+  @_Concurrency.MainActor(unsafe) public func toggleFullscreen()
 }
 public class VideoModel {
   final public let title: Swift.String?
@@ -943,18 +947,16 @@ public struct Series : Swift.Decodable {
   public let imageUrl: Swift.String?
   public init(from decoder: Swift.Decoder) throws
 }
-@objc public class NavigationController : UIKit.UINavigationController {
-  @objc override dynamic public var childForStatusBarStyle: UIKit.UIViewController? {
-    @objc get
+@objc @_Concurrency.MainActor(unsafe) public class NavigationController : UIKit.UINavigationController {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public var childForStatusBarStyle: UIKit.UIViewController? {
+    @_Concurrency.MainActor(unsafe) @objc get
   }
-  @objc override dynamic public var childForStatusBarHidden: UIKit.UIViewController? {
-    @objc get
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public var childForStatusBarHidden: UIKit.UIViewController? {
+    @_Concurrency.MainActor(unsafe) @objc get
   }
-  @objc override dynamic public init(rootViewController: UIKit.UIViewController)
-  @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
-  @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
-  @available(iOS 5.0, *)
-  @objc override dynamic public init(navigationBarClass: Swift.AnyClass?, toolbarClass: Swift.AnyClass?)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(rootViewController: UIKit.UIViewController)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
   @objc deinit
 }
 public protocol RecommendViewDelegate : AnyObject {
@@ -965,26 +967,34 @@ public protocol RecommendViewDelegate : AnyObject {
   func didAppear(_ recommendView: KKSPaaS.RecommendView)
   func didDisappear(_ recommendView: KKSPaaS.RecommendView)
 }
+public struct ProcessDrmDataEnvelope {
+  public let token: Swift.String
+  public let keyURL: Foundation.URL
+  public let certURL: Foundation.URL
+  public let customHeader: [Swift.String : Swift.String]
+  public init(token: Swift.String, keyURL: Foundation.URL, certURL: Foundation.URL, customHeader: [Swift.String : Swift.String])
+}
 public protocol ContentKeyContextCustomizable {
-  func loadContentKeyContext(with token: Swift.String, keyURL: Foundation.URL, certURL: Foundation.URL, custom header: [Swift.String : Swift.String], loadingRequest: AVFoundation.AVAssetResourceLoadingRequest)
+  var envelope: KKSPaaS.ProcessDrmDataEnvelope { get }
+  func resolveDRM(loadingRequest: AVFoundation.AVAssetResourceLoadingRequest)
   func respondCKC(to loadingRequest: AVFoundation.AVAssetResourceLoadingRequest, with request: Foundation.URLRequest)
   func getSPCData(with loadingRequest: AVFoundation.AVAssetResourceLoadingRequest, forApp identifier: Foundation.Data?) -> Foundation.Data?
   func getDRMData(with token: Swift.String, isOffline: Swift.Bool) -> Swift.String
   func getDRMHeader(with dictionary: [Swift.String : Swift.String]) -> Swift.String
 }
-extension ContentKeyContextCustomizable {
+extension KKSPaaS.ContentKeyContextCustomizable {
   public func respondCKC(to loadingRequest: AVFoundation.AVAssetResourceLoadingRequest, with request: Foundation.URLRequest)
   public func getSPCData(with loadingRequest: AVFoundation.AVAssetResourceLoadingRequest, forApp identifier: Foundation.Data?) -> Foundation.Data?
   public func getDRMData(with token: Swift.String, isOffline: Swift.Bool) -> Swift.String
   public func getDRMHeader(with dictionary: [Swift.String : Swift.String]) -> Swift.String
 }
-@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class RecommendView : UIKit.UIView {
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class RecommendView : UIKit.UIView {
   @objc deinit
 }
-extension RecommendView : UIKit.UIGestureRecognizerDelegate {
-  @objc dynamic public func gestureRecognizer(_ gestureRecognizer: UIKit.UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIKit.UIGestureRecognizer) -> Swift.Bool
+extension KKSPaaS.RecommendView : UIKit.UIGestureRecognizerDelegate {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func gestureRecognizer(_ gestureRecognizer: UIKit.UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIKit.UIGestureRecognizer) -> Swift.Bool
 }
-extension Asset : AVFoundation.AVContentKeySessionDelegate {
+extension KKSPaaS.Asset : AVFoundation.AVContentKeySessionDelegate {
   @objc dynamic public func contentKeySession(_ session: AVFoundation.AVContentKeySession, didProvide keyRequest: AVFoundation.AVContentKeyRequest)
   @objc dynamic public func contentKeySession(_ session: AVFoundation.AVContentKeySession, didProvide keyRequest: AVFoundation.AVPersistableContentKeyRequest)
   @objc dynamic public func contentKeySession(_ session: AVFoundation.AVContentKeySession, didProvideRenewingContentKeyRequest keyRequest: AVFoundation.AVContentKeyRequest)
@@ -1019,15 +1029,15 @@ public struct AppLayerContext {
   public func pause(for stream: KKSPaaS.DownloadStream)
   public func cancelAllTasks(completionHandler: (() -> Swift.Void)?)
   public func pending(for stream: KKSPaaS.DownloadStream)
-  public func resume(for stream: KKSPaaS.DownloadStream, completionHandler: ((Swift.Error?) -> Swift.Void)?)
+  public func resume(for stream: KKSPaaS.DownloadStream, completionHandler: ((_ error: Swift.Error?) -> Swift.Void)?)
   public func set(context: KKSPaaS.DownloadContext)
   public func getContext() -> KKSPaaS.DownloadContext?
   public func set(user id: Swift.String)
   public func startAutoDownload()
   public func clearLegacyStateIfNeed()
-  public func download(stream: KKSPaaS.DownloadStream, completionHandler: ((Swift.Error?) -> Swift.Void)?)
+  public func download(stream: KKSPaaS.DownloadStream, completionHandler: ((_ error: Swift.Error?) -> Swift.Void)?)
   public func makeStream(info: KKSPaaS.DownloadInfo, itemAt itemIndex: Swift.Int, resolutionAt resolutionIndex: Swift.Int) -> KKSPaaS.DownloadStream?
-  public func createDownload(stream: KKSPaaS.DownloadStream, token: Swift.String, completionHandler: ((Swift.Error?) -> Swift.Void)?)
+  public func createDownload(stream: KKSPaaS.DownloadStream, token: Swift.String, completionHandler: ((_ error: Swift.Error?) -> Swift.Void)?)
   public func loadStreams(by userId: Swift.String, completion: @escaping (Swift.Error?) -> Swift.Void)
   public func loadCurrentUserStreams(completion: @escaping (Swift.Error?) -> Swift.Void)
   public func loadUserList(completion: @escaping ([Swift.String]) -> Swift.Void)
@@ -1041,16 +1051,16 @@ public struct AppLayerContext {
   public func findStream(item id: Swift.String) -> KKSPaaS.DownloadStream?
   public func update(playback time: Swift.Float, for id: Swift.String)
 }
-extension KKSDownloader {
+extension KKSPaaS.KKSDownloader {
   public func sync(completion: ((Swift.Error?) -> Swift.Void)?)
 }
-@objc @_inheritsConvenienceInitializers public class SettingViewController : UIKit.UITableViewController {
-  @objc override dynamic public func viewDidLoad()
-  @objc override dynamic public func tableView(_ tableView: UIKit.UITableView, didSelectRowAt indexPath: Foundation.IndexPath)
-  @objc override dynamic public func tableView(_ tableView: UIKit.UITableView, heightForRowAt indexPath: Foundation.IndexPath) -> CoreGraphics.CGFloat
-  @objc override dynamic public init(style: UIKit.UITableView.Style)
-  @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
-  @objc required dynamic public init?(coder: Foundation.NSCoder)
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class SettingViewController : UIKit.UITableViewController {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func tableView(_ tableView: UIKit.UITableView, didSelectRowAt indexPath: Foundation.IndexPath)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func tableView(_ tableView: UIKit.UITableView, heightForRowAt indexPath: Foundation.IndexPath) -> CoreGraphics.CGFloat
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(style: UIKit.UITableView.Style)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
   @objc deinit
 }
 public struct KKSAssetURLMaker {
@@ -1058,10 +1068,10 @@ public struct KKSAssetURLMaker {
   public func userDirectoryUrl(with name: Swift.String) -> Foundation.URL
   public func getURL(by data: Foundation.Data?) -> Foundation.URL?
 }
-extension PlaybackHandler {
+extension KKSPaaS.PlaybackHandler {
   public func cancelEndRollMode()
 }
-extension KKSDownloader {
+extension KKSPaaS.KKSDownloader {
   public func renewLicense(for stream: KKSPaaS.DownloadStream) throws
 }
 public struct KKSContentKeyContextModel {
@@ -1082,10 +1092,9 @@ public struct KKSContentKeyContextModel {
   final public let name: Swift.String
   public var contextModel: KKSPaaS.KKSContentKeyContextModel?
   public var fairPlay: KKSPaaS.FairPlay
-  @objc override dynamic public init()
   @objc deinit
 }
-extension Asset {
+extension KKSPaaS.Asset {
   public enum DownloadState : Swift.String {
     case notDownloaded
     case downloading
@@ -1098,7 +1107,7 @@ extension Asset {
     }
   }
 }
-extension Asset {
+extension KKSPaaS.Asset {
   public struct Keys {
     public static let playlistPath: Swift.String
     public static let percentDownloaded: Swift.String
@@ -1118,78 +1127,79 @@ public enum PLLogSeverity : Swift.Int, Swift.CustomStringConvertible {
     get
   }
 }
-@objc @_inheritsConvenienceInitializers open class PlayerViewController : UIKit.UIViewController {
-  public var playbackHandler: KKSPaaS.PlaybackHandler!
-  public var isReady: Swift.Bool {
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class PlayerViewController : UIKit.UIViewController {
+  @_Concurrency.MainActor(unsafe) public var playbackHandler: KKSPaaS.PlaybackHandler!
+  @_Concurrency.MainActor(unsafe) public var isReady: Swift.Bool {
     get
   }
-  public var coverImageUrlString: Swift.String?
-  public var shouldAutoLoad: Swift.Bool
-  public var rotateToPortraitWhenDismiss: (Swift.Bool)
-  public var shouldHideStatusBar: Swift.Bool {
-    get
-    set
-  }
-  public var enablePictureInPicture: Swift.Bool {
+  @_Concurrency.MainActor(unsafe) public var coverImageUrlString: Swift.String?
+  @_Concurrency.MainActor(unsafe) public var shouldAutoLoad: Swift.Bool
+  @_Concurrency.MainActor(unsafe) public var rotateToPortraitWhenDismiss: (Swift.Bool)
+  @_Concurrency.MainActor(unsafe) public var shouldHideStatusBar: Swift.Bool {
     get
     set
   }
-  public var enableBackgroundPlayback: Swift.Bool {
+  @_Concurrency.MainActor(unsafe) public var enablePictureInPicture: Swift.Bool {
     get
     set
   }
-  weak public var delegate: KKSPaaS.PlayerViewControllerDelegate?
-  weak public var daiDelegate: KKSPaaS.PlayerViewControllerDAIDelegate?
-  weak public var recommendViewDelegate: KKSPaaS.RecommendViewDelegate? {
+  @_Concurrency.MainActor(unsafe) public var enableBackgroundPlayback: Swift.Bool {
     get
     set
   }
-  public var appLayerContext: KKSPaaS.AppLayerContext? {
+  @_Concurrency.MainActor(unsafe) weak public var delegate: KKSPaaS.PlayerViewControllerDelegate?
+  @_Concurrency.MainActor(unsafe) weak public var daiDelegate: KKSPaaS.PlayerViewControllerDAIDelegate?
+  @_Concurrency.MainActor(unsafe) weak public var recommendViewDelegate: KKSPaaS.RecommendViewDelegate? {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var appLayerContext: KKSPaaS.AppLayerContext? {
     get
   }
-  public var contentKeyContextMode: KKSPaaS.ContentKeyContextMode
-  public var isPortalEnabled: Swift.Bool
-  public var settingItemShouldHideConfig: [Swift.String : Swift.Bool]
-  convenience public init(with appLayerContext: KKSPaaS.AppLayerContext)
-  convenience public init(withVideo model: KKSPaaS.VideoModel?, settingConfig: KKSPaaS.SettingConfig? = nil)
+  @_Concurrency.MainActor(unsafe) public var contentKeyContextMode: KKSPaaS.ContentKeyContextMode
+  @_Concurrency.MainActor(unsafe) public var isPortalEnabled: Swift.Bool
+  @_Concurrency.MainActor(unsafe) public var settingItemShouldHideConfig: [Swift.String : Swift.Bool]
+  @_Concurrency.MainActor(unsafe) convenience public init(with appLayerContext: KKSPaaS.AppLayerContext)
+  @_Concurrency.MainActor(unsafe) convenience public init(withVideo model: KKSPaaS.VideoModel?, settingConfig: KKSPaaS.SettingConfig? = nil)
   @objc deinit
-  @objc override dynamic open func viewDidLoad()
-  @objc override dynamic open func motionEnded(_ motion: UIKit.UIEvent.EventSubtype, with event: UIKit.UIEvent?)
-  @objc override dynamic open var prefersStatusBarHidden: Swift.Bool {
-    @objc get
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidLoad()
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func motionEnded(_ motion: UIKit.UIEvent.EventSubtype, with event: UIKit.UIEvent?)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open var prefersStatusBarHidden: Swift.Bool {
+    @_Concurrency.MainActor(unsafe) @objc get
   }
-  @objc override dynamic open var preferredStatusBarStyle: UIKit.UIStatusBarStyle {
-    @objc get
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open var preferredStatusBarStyle: UIKit.UIStatusBarStyle {
+    @_Concurrency.MainActor(unsafe) @objc get
   }
-  @objc override dynamic open var prefersHomeIndicatorAutoHidden: Swift.Bool {
-    @objc get
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open var prefersHomeIndicatorAutoHidden: Swift.Bool {
+    @_Concurrency.MainActor(unsafe) @objc get
   }
-  @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
-  @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
 }
-extension PlayerViewController {
-  @objc override dynamic open func dismiss(animated flag: Swift.Bool, completion: (() -> Swift.Void)? = nil)
-  @objc override dynamic open func viewWillTransition(to size: CoreGraphics.CGSize, with coordinator: UIKit.UIViewControllerTransitionCoordinator)
+extension KKSPaaS.PlayerViewController {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func dismiss(animated flag: Swift.Bool, completion: (() -> Swift.Void)? = nil)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewWillTransition(to size: CoreGraphics.CGSize, with coordinator: UIKit.UIViewControllerTransitionCoordinator)
 }
-extension PlayerViewController {
-  public func set(videoModel: KKSPaaS.VideoModel)
-  public func changeContent(with id: Swift.String?)
-  public func play()
-  public func pause()
-  public func seek(to seconds: Foundation.TimeInterval, completion: ((Swift.Bool) -> Swift.Void)?)
-  public func rewind()
-  public func forward()
-  public func load()
-  public func restart()
-  public func swipeDownRecommendationPanel()
-  public func swipeUpRecommendationPanel()
-  public func showControlPanel(_ needToShow: Swift.Bool)
-  public func playNextEpisode()
-  public func playPreviousEpisode()
-  public func lockControlPanel(_ lock: Swift.Bool)
+extension KKSPaaS.PlayerViewController {
+  @_Concurrency.MainActor(unsafe) public func set(videoModel: KKSPaaS.VideoModel)
+  @_Concurrency.MainActor(unsafe) public func changeContent(with id: Swift.String?)
+  @_Concurrency.MainActor(unsafe) public func play()
+  @_Concurrency.MainActor(unsafe) public func pause()
+  @_Concurrency.MainActor(unsafe) public func seek(to seconds: Foundation.TimeInterval, completion: ((Swift.Bool) -> Swift.Void)?)
+  @_Concurrency.MainActor(unsafe) public func rewind()
+  @_Concurrency.MainActor(unsafe) public func forward()
+  @_Concurrency.MainActor(unsafe) public func load()
+  @_Concurrency.MainActor(unsafe) public func restart()
+  @_Concurrency.MainActor(unsafe) public func swipeDownRecommendationPanel()
+  @_Concurrency.MainActor(unsafe) public func swipeUpRecommendationPanel()
+  @_Concurrency.MainActor(unsafe) public func showControlPanel(_ needToShow: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) public func playNextEpisode()
+  @_Concurrency.MainActor(unsafe) public func playPreviousEpisode()
+  @_Concurrency.MainActor(unsafe) public func lockControlPanel(_ lock: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) public func setMute(_ isMute: Swift.Bool)
 }
-extension PlayerViewController {
-  public func setupDAI(adsLoader: GoogleInteractiveMediaAds.IMAAdsLoader)
+extension KKSPaaS.PlayerViewController {
+  @_Concurrency.MainActor(unsafe) public func setupDAI(adsLoader: GoogleInteractiveMediaAds.IMAAdsLoader)
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class UIStyle : ObjectiveC.NSObject {
   public var slider: KKSPaaS.UIStyleSlider
@@ -1211,24 +1221,24 @@ extension PlayerViewController {
   public var tintColor: UIKit.UIColor
   @objc deinit
 }
-extension PlayerViewController : KKSPaaS.PlaybackHandlerDelegate {
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, replaceDisplayedTextIn resolution: KKSPaaS.Resolution) -> Swift.String
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChangeBuffering stateCase: KKSPaaS.PlaybackBufferingCase)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, shouldHideNavigationBar hidden: Swift.Bool)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChange resolution: Swift.Int?, for reason: KKSPaaS.SettingChangedReason)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, requestResolutionFromAvailableResource resource: [KKSPaaS.Resolution], current resolution: Swift.Int?) -> KKSPaaS.Resolution?
-  public func playbackHandlerHasPreferredQuality(_ handler: KKSPaaS.PlaybackHandler) -> Swift.Bool?
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChangePlayback state: KKSPaaS.PlaybackState)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChangeItem id: Swift.String, for type: KKSPaaS.ItemType)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, shouldChangeBackground imageUrl: Swift.String?)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChangePlayback mode: KKSPaaS.PlaybackMode)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didStartCastingWith request: GoogleCast.GCKRequest?)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didReceive error: KKSPaaS.PAASError)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChange title: Swift.String?, subtitle: Swift.String?, duration: Swift.String?)
-  public func playbackHandlerDidEnd(_ handler: KKSPaaS.PlaybackHandler)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didReceive event: KKSPaaS.ADBreakEvent, for adBreak: KKSPaaS.ADBreak, of avail: KKSPaaS.Avail)
-  public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didUpdate progress: Foundation.TimeInterval, for adBreak: KKSPaaS.ADBreak, of avail: KKSPaaS.Avail)
-  public func playbackHandlerDidStop(_ handler: KKSPaaS.PlaybackHandler)
+extension KKSPaaS.PlayerViewController : KKSPaaS.PlaybackHandlerDelegate {
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, replaceDisplayedTextIn resolution: KKSPaaS.Resolution) -> Swift.String
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChangeBuffering stateCase: KKSPaaS.PlaybackBufferingCase)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, shouldHideNavigationBar hidden: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChange resolution: Swift.Int?, for reason: KKSPaaS.SettingChangedReason)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, requestResolutionFromAvailableResource resource: [KKSPaaS.Resolution], current resolution: Swift.Int?) -> KKSPaaS.Resolution?
+  @_Concurrency.MainActor(unsafe) public func playbackHandlerHasPreferredQuality(_ handler: KKSPaaS.PlaybackHandler) -> Swift.Bool?
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChangePlayback state: KKSPaaS.PlaybackState)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChangeItem id: Swift.String, for type: KKSPaaS.ItemType)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, shouldChangeBackground imageUrl: Swift.String?)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChangePlayback mode: KKSPaaS.PlaybackMode)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didStartCastingWith request: GoogleCast.GCKRequest?)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didReceive error: KKSPaaS.PAASError)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didChange title: Swift.String?, subtitle: Swift.String?, duration: Swift.String?)
+  @_Concurrency.MainActor(unsafe) public func playbackHandlerDidEnd(_ handler: KKSPaaS.PlaybackHandler)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didReceive event: KKSPaaS.ADBreakEvent, for adBreak: KKSPaaS.ADBreak, of avail: KKSPaaS.Avail)
+  @_Concurrency.MainActor(unsafe) public func playbackHandler(_ handler: KKSPaaS.PlaybackHandler, didUpdate progress: Foundation.TimeInterval, for adBreak: KKSPaaS.ADBreak, of avail: KKSPaaS.Avail)
+  @_Concurrency.MainActor(unsafe) public func playbackHandlerDidStop(_ handler: KKSPaaS.PlaybackHandler)
 }
 public struct SetComparer {
 }
@@ -1292,7 +1302,7 @@ public class DownloadStream {
   public func loadAVURLAsset() -> AVFoundation.AVURLAsset?
   @objc deinit
 }
-extension DownloadStream {
+extension KKSPaaS.DownloadStream {
   public struct Key {
     public static let itemID: Swift.String
     public static let playlistPath: Swift.String
@@ -1304,7 +1314,7 @@ extension DownloadStream {
     public static let token: Swift.String
   }
 }
-extension DownloadStream {
+extension KKSPaaS.DownloadStream {
   public enum RenewLicenseState : Swift.String {
     case willRenewLicense
     case didRenewLicense
@@ -1316,14 +1326,14 @@ extension DownloadStream {
     }
   }
 }
-extension NSNotification.Name {
+extension Foundation.NSNotification.Name {
   public static let StreamDownloadStateChanged: Foundation.Notification.Name
   public static let StreamDownloadProgress: Foundation.Notification.Name
   public static let StreamDownloadError: Foundation.Notification.Name
   public static let StreamDownloadSessionError: Foundation.Notification.Name
   public static let StreamRenewLicenseStateChanged: Foundation.Notification.Name
 }
-extension KKSDownloader {
+extension KKSPaaS.KKSDownloader {
   public func migrateIfNeed(completion: @escaping () -> Swift.Void)
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class AudioSessionManager : ObjectiveC.NSObject {
@@ -1331,8 +1341,8 @@ extension KKSDownloader {
   public var audioSessionEnabled: Swift.Bool
   @objc deinit
 }
-extension UIImageView {
-  public func setImage(with url: Foundation.URL?, completion: ((UIKit.UIImage?) -> Swift.Void)? = nil)
+extension UIKit.UIImageView {
+  @_Concurrency.MainActor(unsafe) public func setImage(with url: Foundation.URL?, completion: ((UIKit.UIImage?) -> Swift.Void)? = nil)
 }
 public struct Season : Swift.Decodable {
   public let id: Swift.String
@@ -1393,7 +1403,7 @@ public protocol Default {
   func set(value: Swift.Bool, forKey: Swift.String)
   func value(forKey: Swift.String) -> Swift.Bool
 }
-extension Default {
+extension KKSPaaS.Default {
   public var userDefault: Foundation.UserDefaults {
     get
   }
@@ -1414,7 +1424,7 @@ public struct HLSDownloadManagerConfig {
   public var keyModuleServer: Swift.String
   public var leaveSize: Swift.Int64
 }
-extension NSManagedObjectModel {
+extension CoreData.NSManagedObjectModel {
   public func modelName() -> Swift.String?
 }
 public struct MediaItem : KKSPaaS.AppInfoProtocol {

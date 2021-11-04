@@ -3,6 +3,7 @@
 //  BlendVisionLoomPlayer
 //
 //  Created by chantil on 2021/7/30.
+//  Copyright © 2021 KKStream Limited. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
