@@ -95,6 +95,7 @@ public struct PAASError : Swift.Error {
   public var clientError: KKSPaaS.APIClientError
   public var errorCode: Swift.String
   public var message: Swift.String
+  public init()
 }
 extension KKSPaaS.PAASError {
   public init(_ error: KKSPaaS.ContentError)
@@ -399,6 +400,52 @@ extension KKSPaaS.ADBreak : Swift.Equatable {
   @objc deinit
 }
 extension KKSPaaS.Logger {
+  public enum EventName : Swift.String {
+    case playbackBegan
+    case playbackStarted
+    case playbackStopped
+    case playbackEnded
+    case seekingEnded
+    case playbackError
+    case adPlaybackStarted
+    case adPlaybackStopped
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public enum PropertyName : Swift.String {
+    case id
+    case name
+    case name2
+    case sectionId
+    case playbackMode
+    case sessionId
+    case playerName
+    case moduleVersion
+    case totalDuration
+    case currentPosition
+    case playerStartupTime
+    case videoStartupTime
+    case videoPlayedDuration
+    case seekFrom
+    case seekTo
+    case moduleErrorCode
+    case playerErrorCode
+    case playbackPercentage
+    case videoTotalPlayedDuration
+    case adTotalPlayedDuration
+    case adPlayedDuration
+    case ssai
+    public init?(rawValue: Swift.String)
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+}
+extension KKSPaaS.Logger {
   public struct Keys {
     public static let EventName: Swift.String
     public static let EventProperty: Swift.String
@@ -484,6 +531,8 @@ public enum ContentError : Swift.Int, Swift.Error {
   case badRequest
   case isNotPlayable
   case resolutionNotFound
+  case targetResolutionTooHigh
+  case targetResolutionTooLow
   public init?(rawValue: Swift.Int)
   public typealias RawValue = Swift.Int
   public var rawValue: Swift.Int {
@@ -763,6 +812,15 @@ public enum SettingChangedReason : Swift.Int {
     get
   }
 }
+extension KKSPaaS.PlayerViewController {
+  @_Concurrency.MainActor(unsafe) public func play()
+  @_Concurrency.MainActor(unsafe) public func pause()
+  @_Concurrency.MainActor(unsafe) public func rewind()
+  @_Concurrency.MainActor(unsafe) public func forward()
+  @_Concurrency.MainActor(unsafe) public func playNextEpisode()
+  @_Concurrency.MainActor(unsafe) public func playPreviousEpisode()
+  @_Concurrency.MainActor(unsafe) public func seek(to seconds: Foundation.TimeInterval, completion: ((Swift.Bool) -> Swift.Void)?)
+}
 @_inheritsConvenienceInitializers @objc(DownloadInfoEntity) public class DownloadInfoEntity : CoreData.NSManagedObject {
   @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
   @objc deinit
@@ -793,6 +851,7 @@ public class Throttler {
   public func throttle(_ block: @escaping () -> Swift.Void)
   @objc deinit
 }
+public typealias VideoEventHandler = ((_ eventName: Swift.String, _ properties: [Swift.String : Any]) -> Swift.Void)
 @_hasMissingDesignatedInitializers public class PlaybackHandler {
   public var player: KKSPaaS.KKSAVPlayer!
   @objc deinit
@@ -839,16 +898,6 @@ public enum PlayerItemState : Swift.String {
   }
 }
 @objc @_inheritsConvenienceInitializers public class KKSPlayerItem : AVFoundation.AVPlayerItem {
-  @available(*, deprecated, message: "Please use delegate to receive these events")
-  public var didPlayToEnd: ((KKSPaaS.KKSPlayerItem) -> Swift.Void)?
-  @available(*, deprecated, message: "Please use delegate to receive these events")
-  public var didFail: ((KKSPaaS.KKSPlayerItem) -> Swift.Void)?
-  @available(*, deprecated, message: "Please use delegate to receive these events")
-  public var didPlaybackStalled: ((KKSPaaS.KKSPlayerItem) -> Swift.Void)?
-  @available(*, deprecated, message: "Please use delegate to receive these events")
-  public var didReceiveAccessLog: ((KKSPaaS.KKSPlayerItem) -> Swift.Void)?
-  @available(*, deprecated, message: "Please use delegate to receive these events")
-  public var didReceiveErrorLog: ((KKSPaaS.KKSPlayerItem) -> Swift.Void)?
   convenience public init(urlAsset: AVFoundation.AVURLAsset)
   @objc deinit
   @available(iOS 7.0, *)
@@ -927,7 +976,7 @@ extension KKSPaaS.PlayerView {
 }
 public class VideoModel {
   final public let title: Swift.String?
-  public init(title: Swift.String?, sourceURL: Foundation.URL?, nextEpisodeButtonEnabled: Swift.Bool, prevEpisodeButtonEnabled: Swift.Bool, drmSolution: KKSPaaS.DRMSolution?, playerControllerEventDelegate: KKSPaaS.PlayerControllerEventDelegate? = nil, startTimeMs: Swift.Double? = nil, thumbnailSeekingUrl: Foundation.URL? = nil)
+  public init(title: Swift.String?, sourceURL: Foundation.URL?, nextEpisodeButtonEnabled: Swift.Bool, prevEpisodeButtonEnabled: Swift.Bool, drmSolution: KKSPaaS.DRMSolution?, playerControllerEventDelegate: KKSPaaS.PlayerControllerEventDelegate? = nil, startTimeMs: Swift.Double? = nil, thumbnailSeekingUrl: Foundation.URL? = nil, userDictionary: [Swift.String : Swift.String] = [:])
   @objc deinit
 }
 public protocol DRMSolution {
@@ -936,6 +985,16 @@ public protocol PlayerControllerEventDelegate : AnyObject {
   func didClickNextEpisode() -> KKSPaaS.VideoModel?
   func didClickPrevEpisode() -> KKSPaaS.VideoModel?
   func userDidTapControlPanel(isHidden: Swift.Bool)
+}
+public struct LogEvent {
+  public static let play: Swift.String
+  public static let pause: Swift.String
+  public static let rewind: Swift.String
+  public static let forward: Swift.String
+  public static let prevEpisode: Swift.String
+  public static let nextEpisode: Swift.String
+  public static let settingPageEntered: Swift.String
+  public static let settingPageExited: Swift.String
 }
 public struct KKSLicenseValidator {
   public init(current: Swift.Int64, license time: KKSPaaS.KKSLicenseTime?)
@@ -1063,6 +1122,9 @@ extension KKSPaaS.KKSDownloader {
   @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
   @objc deinit
 }
+extension KKSPaaS.SettingViewController : UIKit.UIAdaptivePresentationControllerDelegate {
+  @_Concurrency.MainActor(unsafe) @objc dynamic public func presentationControllerDidDismiss(_ presentationController: UIKit.UIPresentationController)
+}
 public struct KKSAssetURLMaker {
   public init()
   public func userDirectoryUrl(with name: Swift.String) -> Foundation.URL
@@ -1147,6 +1209,10 @@ public enum PLLogSeverity : Swift.Int, Swift.CustomStringConvertible {
     get
     set
   }
+  @_Concurrency.MainActor(unsafe) public var videoEventHandler: KKSPaaS.VideoEventHandler? {
+    get
+    set
+  }
   @_Concurrency.MainActor(unsafe) weak public var delegate: KKSPaaS.PlayerViewControllerDelegate?
   @_Concurrency.MainActor(unsafe) weak public var daiDelegate: KKSPaaS.PlayerViewControllerDAIDelegate?
   @_Concurrency.MainActor(unsafe) weak public var recommendViewDelegate: KKSPaaS.RecommendViewDelegate? {
@@ -1183,18 +1249,11 @@ extension KKSPaaS.PlayerViewController {
 extension KKSPaaS.PlayerViewController {
   @_Concurrency.MainActor(unsafe) public func set(videoModel: KKSPaaS.VideoModel)
   @_Concurrency.MainActor(unsafe) public func changeContent(with id: Swift.String?)
-  @_Concurrency.MainActor(unsafe) public func play()
-  @_Concurrency.MainActor(unsafe) public func pause()
-  @_Concurrency.MainActor(unsafe) public func seek(to seconds: Foundation.TimeInterval, completion: ((Swift.Bool) -> Swift.Void)?)
-  @_Concurrency.MainActor(unsafe) public func rewind()
-  @_Concurrency.MainActor(unsafe) public func forward()
   @_Concurrency.MainActor(unsafe) public func load()
   @_Concurrency.MainActor(unsafe) public func restart()
   @_Concurrency.MainActor(unsafe) public func swipeDownRecommendationPanel()
   @_Concurrency.MainActor(unsafe) public func swipeUpRecommendationPanel()
   @_Concurrency.MainActor(unsafe) public func showControlPanel(_ needToShow: Swift.Bool)
-  @_Concurrency.MainActor(unsafe) public func playNextEpisode()
-  @_Concurrency.MainActor(unsafe) public func playPreviousEpisode()
   @_Concurrency.MainActor(unsafe) public func lockControlPanel(_ lock: Swift.Bool)
   @_Concurrency.MainActor(unsafe) public func setMute(_ isMute: Swift.Bool)
 }
@@ -1447,6 +1506,12 @@ extension KKSPaaS.PlaybackMode : Swift.Hashable {}
 extension KKSPaaS.PlaybackState : Swift.Equatable {}
 extension KKSPaaS.PlaybackState : Swift.Hashable {}
 extension KKSPaaS.PlaybackState : Swift.RawRepresentable {}
+extension KKSPaaS.Logger.EventName : Swift.Equatable {}
+extension KKSPaaS.Logger.EventName : Swift.Hashable {}
+extension KKSPaaS.Logger.EventName : Swift.RawRepresentable {}
+extension KKSPaaS.Logger.PropertyName : Swift.Equatable {}
+extension KKSPaaS.Logger.PropertyName : Swift.Hashable {}
+extension KKSPaaS.Logger.PropertyName : Swift.RawRepresentable {}
 extension KKSPaaS.BarItemType : Swift.Equatable {}
 extension KKSPaaS.BarItemType : Swift.Hashable {}
 extension KKSPaaS.BarItemType : Swift.RawRepresentable {}

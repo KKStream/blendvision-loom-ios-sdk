@@ -12,6 +12,7 @@ import BlendVisionLoomPlayer
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    var backgroundTaskId: UIBackgroundTaskIdentifier?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -32,6 +33,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.makeKeyAndVisible()
         }
         return true
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        // Extend the app's background execution time.
+        // Perform the task on a background queue.
+        DispatchQueue.global().async {
+            // Request the task assertion and save the ID.
+            self.backgroundTaskId = UIApplication.shared.beginBackgroundTask {
+                // End the task if time expires.
+                UIApplication.shared.endBackgroundTask(self.backgroundTaskId!)
+                self.backgroundTaskId = UIBackgroundTaskIdentifier.invalid
+            }
+
+            // End the task assertion.
+            self.backgroundTaskId = UIBackgroundTaskIdentifier.invalid
+            UIApplication.shared.endBackgroundTask(self.backgroundTaskId!)
+        }
     }
 
     // MARK: UISceneSession Lifecycle
