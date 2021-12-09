@@ -166,11 +166,92 @@ class PlayerEventHandler: PlayerEventHandling {
     func didFail(_ player: LoomPlayer?, error: LoomError)  {
         // Customized behaviors...
     }
+
+    // Optional. Called when a video event occurs for video tracking.
+    func didReceiveVideoEvent(_ player: LoomPlayer?, videoEvent: VideoEvent) {
+        // Customized behaviors...
+        switch videoEvent {
+        case .videoPlaybackBegan(let contentIndex, let position):
+            break
+        case .videoPlaybackEnded(let contentIndex, let position):
+            break
+        case .videoPlaybackStopped(let contentIndex, let playedDuration):
+            break
+        case .videoPlaybackErrorOccurred(let contentIndex, let position, let playbackError):
+            break
+        case .play(let contentIndex, let position):
+            break
+        case .pause(let contentIndex, let position):
+            break
+        case .rewind(let contentIndex, let position):
+            break
+        case .forward(let contentIndex, let position):
+            break
+        case .previousEpisode(let contentIndex, let position):
+            break
+        case .nextEpisode(let contentIndex, let position):
+            break
+        case .videoSeekingEnded(let contentIndex, let seekFrom, let seekTo):
+            break
+        case .settingPageEntered(let contentIndex):
+            break
+        case .settingPageExited(let contentIndex):
+            break
+        }
+    }
 }
 
 // Provide the handler to player at initialization stage.
 let handler = PlayerEventHandler()
 let player = LoomPlayer(..., eventHandler: handler)
+```
+
+##### Note
+
+To make sure your app can receive `.videoPlaybackEnded` event when app terminates, it is required to extend app's background execution time in `AppDelegate` (and/or `UISceneDelegate` if you support iOS 13 and later). For more details, please see [Apple Developer Documentation | Extending Your App's Background Execution Time](https://developer.apple.com/documentation/uikit/app_and_environment/scenes/preparing_your_ui_to_run_in_the_background/extending_your_app_s_background_execution_time).
+
+```swift
+// AppDelegate.swift
+func applicationDidEnterBackground(_ application: UIApplication) {
+    // Extend the app's background execution time.
+    // Perform the task on a background queue.
+    DispatchQueue.global().async {
+        // Request the task assertion and save the ID.
+        self.backgroundTaskId = UIApplication.shared.beginBackgroundTask {
+            // End the task if time expires.
+            UIApplication.shared.endBackgroundTask(self.backgroundTaskId!)
+            self.backgroundTaskId = UIBackgroundTaskIdentifier.invalid
+        }
+        
+        // Do your task here...
+        // ...
+
+        // End the task assertion.
+        self.backgroundTaskId = UIBackgroundTaskIdentifier.invalid
+        UIApplication.shared.endBackgroundTask(self.backgroundTaskId!)
+    }
+}
+
+// SceneDelegate.swift
+func sceneDidEnterBackground(_ scene: UIScene) {
+    // Extend the app's background execution time.
+    // Perform the task on a background queue.
+    DispatchQueue.global().async {
+        // Request the task assertion and save the ID.
+        self.backgroundTaskId = UIApplication.shared.beginBackgroundTask {
+            // End the task if time expires.
+            UIApplication.shared.endBackgroundTask(self.backgroundTaskId!)
+            self.backgroundTaskId = UIBackgroundTaskIdentifier.invalid
+        }
+        
+        // Do your task here...
+        // ...
+
+        // End the task assertion.
+        self.backgroundTaskId = UIBackgroundTaskIdentifier.invalid
+        UIApplication.shared.endBackgroundTask(self.backgroundTaskId!)
+    }
+}
 ```
 
 #### Error
@@ -181,7 +262,6 @@ let player = LoomPlayer(..., eventHandler: handler)
 enum LoomError: Error {
     struct PlaybackError: Error {
         var code: String
-        var message: String
     }
 
     // Please refer to the playback error document for more details.

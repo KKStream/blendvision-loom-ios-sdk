@@ -92,4 +92,9 @@ extension PageViewController: PlayerEventHandling {
             player.pause()
         }
     }
+
+    func didReceiveVideoEvent(_ player: LoomPlayer?, videoEvent: VideoEvent) {
+        // handle video events
+        // ...
+    }
 }

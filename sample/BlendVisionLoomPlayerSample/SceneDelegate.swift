@@ -10,9 +10,8 @@ import UIKit
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
-
+    var backgroundTaskId: UIBackgroundTaskIdentifier?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -59,11 +58,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
-        // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
+        // Extend the app's background execution time.
+        // Perform the task on a background queue.
+        DispatchQueue.global().async {
+            // Request the task assertion and save the ID.
+            self.backgroundTaskId = UIApplication.shared.beginBackgroundTask {
+                // End the task if time expires.
+                UIApplication.shared.endBackgroundTask(self.backgroundTaskId!)
+                self.backgroundTaskId = UIBackgroundTaskIdentifier.invalid
+            }
+
+            // End the task assertion.
+            self.backgroundTaskId = UIBackgroundTaskIdentifier.invalid
+            UIApplication.shared.endBackgroundTask(self.backgroundTaskId!)
+        }
     }
-
-
 }
 
