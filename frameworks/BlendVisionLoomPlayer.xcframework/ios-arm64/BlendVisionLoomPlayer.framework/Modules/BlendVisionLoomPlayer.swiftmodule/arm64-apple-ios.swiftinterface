@@ -67,9 +67,6 @@ public enum LoomError : Swift.Error {
     public var code: Swift.String {
       get
     }
-    public var message: Swift.String {
-      get
-    }
   }
   case playback(BlendVisionLoomPlayer.LoomError.PlaybackError)
   case startIndexOutOfRange
@@ -125,11 +122,13 @@ public protocol PlayerEventHandling : AnyObject {
   func didLoad(_ player: BlendVisionLoomPlayer.LoomPlayer)
   func didEndVideo(_ player: BlendVisionLoomPlayer.LoomPlayer, at index: Swift.Int)
   func didFail(_ player: BlendVisionLoomPlayer.LoomPlayer?, error: BlendVisionLoomPlayer.LoomError)
+  func didReceiveVideoEvent(_ player: BlendVisionLoomPlayer.LoomPlayer?, videoEvent: BlendVisionLoomPlayer.VideoEvent)
 }
 extension BlendVisionLoomPlayer.PlayerEventHandling {
   public func didLoad(_ player: BlendVisionLoomPlayer.LoomPlayer)
   public func didEndVideo(_ player: BlendVisionLoomPlayer.LoomPlayer, at index: Swift.Int)
   public func didFail(_ player: BlendVisionLoomPlayer.LoomPlayer?, error: BlendVisionLoomPlayer.LoomError)
+  public func didReceiveVideoEvent(_ player: BlendVisionLoomPlayer.LoomPlayer?, videoEvent: BlendVisionLoomPlayer.VideoEvent)
 }
 @_hasMissingDesignatedInitializers final public class Loom {
   public static let shared: BlendVisionLoomPlayer.Loom
@@ -150,6 +149,21 @@ public enum LoomEnvironment : Swift.String {
   public var rawValue: Swift.String {
     get
   }
+}
+public enum VideoEvent {
+  case videoPlaybackBegan(contentIndex: Swift.Int, position: Foundation.TimeInterval)
+  case videoPlaybackEnded(contentIndex: Swift.Int, position: Foundation.TimeInterval)
+  case videoPlaybackStopped(contentIndex: Swift.Int, playedDuration: Foundation.TimeInterval)
+  case videoPlaybackErrorOccurred(contentIndex: Swift.Int, position: Foundation.TimeInterval, playbackError: BlendVisionLoomPlayer.LoomError.PlaybackError)
+  case play(contentIndex: Swift.Int, position: Foundation.TimeInterval)
+  case pause(contentIndex: Swift.Int, position: Foundation.TimeInterval)
+  case rewind(contentIndex: Swift.Int, position: Foundation.TimeInterval)
+  case forward(contentIndex: Swift.Int, position: Foundation.TimeInterval)
+  case previousEpisode(contentIndex: Swift.Int, position: Foundation.TimeInterval)
+  case nextEpisode(contentIndex: Swift.Int, position: Foundation.TimeInterval)
+  case videoSeekingEnded(contentIndex: Swift.Int, seekFrom: Foundation.TimeInterval, seekTo: Foundation.TimeInterval)
+  case settingPageEntered(contentIndex: Swift.Int)
+  case settingPageExited(contentIndex: Swift.Int)
 }
 extension BlendVisionLoomPlayer.LoomEnvironment : Swift.CaseIterable {}
 extension BlendVisionLoomPlayer.LoomEnvironment : Swift.Equatable {}
