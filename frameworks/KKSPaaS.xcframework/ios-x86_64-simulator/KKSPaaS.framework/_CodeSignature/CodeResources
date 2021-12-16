@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		UaNAGgjRjMdT8IFx/TZYypNodTM=
+		UNShArLei/cvhgf4JZQ+KnCc/eY=
 		</data>
 		<key>Headers/KKSPaaS-Swift.h</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		5yHu+kyIWvszZsAEzNBlH0+vBN8=
+		AHzgT8PrpX6W0M9Z5e8SJyP8fy4=
 		</data>
 		<key>KKSDownload.momd/KKSDownload.mom</key>
 		<data>
@@ -50,11 +50,11 @@
 		</data>
 		<key>Modules/KKSPaaS.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		PVsbnB4gJDtPWBq7JGA5J0mM9RI=
+		mmTtHIfT2Ws2wJwgKSZcMXYk67Q=
 		</data>
 		<key>Modules/KKSPaaS.swiftmodule/Project/x86_64.swiftsourceinfo</key>
 		<data>
-		PVsbnB4gJDtPWBq7JGA5J0mM9RI=
+		mmTtHIfT2Ws2wJwgKSZcMXYk67Q=
 		</data>
 		<key>Modules/KKSPaaS.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -66,7 +66,7 @@
 		</data>
 		<key>Modules/KKSPaaS.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		gtIwTl+h5j0B0totnQmmSly/pyA=
+		2BJXcadF3J/HK8tBOSECHcC4xQ4=
 		</data>
 		<key>Modules/KKSPaaS.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -78,7 +78,7 @@
 		</data>
 		<key>Modules/KKSPaaS.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		gtIwTl+h5j0B0totnQmmSly/pyA=
+		2BJXcadF3J/HK8tBOSECHcC4xQ4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -91,7 +91,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			jCohJN1Q0SiPhb0ZA/OoZhwxhLD/GFnj89lXLiUFlVA=
+			BZWjokK9AweVeFFjrp0qe/gcECkjCYiBYwgU/Srs0BU=
 			</data>
 		</dict>
 		<key>Headers/KKSPaaS-Swift.h</key>
@@ -161,14 +161,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			wjkkKn9rIORBFNSu1yXJLqIuGdGwRFKd/pB2rMut/Do=
+			9ziKAlUbGkXDFXlc1fguJEQ9CJwnkSmsPZ2m7zzXVEk=
 			</data>
 		</dict>
 		<key>Modules/KKSPaaS.swiftmodule/Project/x86_64.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			wjkkKn9rIORBFNSu1yXJLqIuGdGwRFKd/pB2rMut/Do=
+			9ziKAlUbGkXDFXlc1fguJEQ9CJwnkSmsPZ2m7zzXVEk=
 			</data>
 		</dict>
 		<key>Modules/KKSPaaS.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -189,7 +189,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			CF4t53RfVXl7mxLTMjpqMxA1MPNguliCbML4TetFi1c=
+			9MVNlceAi0sm5SSQv1LRnyPbrePD9VDX/g1nm7CgFhY=
 			</data>
 		</dict>
 		<key>Modules/KKSPaaS.swiftmodule/x86_64.swiftdoc</key>
@@ -210,7 +210,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			CF4t53RfVXl7mxLTMjpqMxA1MPNguliCbML4TetFi1c=
+			9MVNlceAi0sm5SSQv1LRnyPbrePD9VDX/g1nm7CgFhY=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
