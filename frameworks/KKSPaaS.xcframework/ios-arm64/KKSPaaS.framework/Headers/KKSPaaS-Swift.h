@@ -445,12 +445,12 @@ SWIFT_CLASS("_TtC7KKSPaaS20PlayerViewController")
 
 
 
+
 @class AVPictureInPictureController;
 
 @interface PlayerViewController (SWIFT_EXTENSION(KKSPaaS)) <AVPictureInPictureControllerDelegate>
 - (void)pictureInPictureController:(AVPictureInPictureController * _Nonnull)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^ _Nonnull)(BOOL))completionHandler;
 @end
-
 
 
 

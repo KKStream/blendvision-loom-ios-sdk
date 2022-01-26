@@ -91,6 +91,47 @@ public struct KKSLicenseTime : Swift.Decodable {
   public init()
   public init(from decoder: Swift.Decoder) throws
 }
+public enum PlayerItemState : Swift.String {
+  case none
+  case end
+  case fail
+  case playbackStalled
+  case errorLog
+  case accessLog
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers public class KKSPlayerItem : AVFoundation.AVPlayerItem {
+  convenience public init(urlAsset: AVFoundation.AVURLAsset)
+  @objc deinit
+  @available(iOS 7.0, *)
+  @objc override dynamic public init(asset: AVFoundation.AVAsset, automaticallyLoadedAssetKeys: [Swift.String]?)
+}
+extension KKSPaaS.KKSPlayerItem {
+  public var isLicenseExpired: Swift.Bool {
+    get
+  }
+  public var errorLogEventDescription: Swift.String? {
+    get
+  }
+}
+extension AVFoundation.AVPlayerItem {
+  public var selectedSubtitle: AVFoundation.AVMediaSelectionOption? {
+    get
+  }
+  public var selectedAudioTrack: AVFoundation.AVMediaSelectionOption? {
+    get
+  }
+  public var subtitles: [AVFoundation.AVMediaSelectionOption] {
+    get
+  }
+  public var audioTracks: [AVFoundation.AVMediaSelectionOption] {
+    get
+  }
+}
 public struct PAASError : Swift.Error {
   public var clientError: KKSPaaS.APIClientError
   public var errorCode: Swift.String
@@ -687,55 +728,6 @@ extension KKSPaaS.APIClientError {
     get
   }
 }
-public protocol KKSAVPlayerDelegate : AnyObject {
-  func player(player: KKSPaaS.KKSAVPlayer, didChange state: KKSPaaS.PlayerItemState, for item: KKSPaaS.KKSPlayerItem)
-  func player(player: KKSPaaS.KKSAVPlayer, didChange time: Foundation.TimeInterval, duration: Foundation.TimeInterval)
-  func player(player: KKSPaaS.KKSAVPlayer, didReceiveCKC loadingRequest: AVFoundation.AVAssetResourceLoadingRequest)
-  func player(player: KKSPaaS.KKSAVPlayer, didChange status: AVFoundation.AVPlayerItem.Status, for item: AVFoundation.AVPlayerItem)
-  func player(player: KKSPaaS.KKSAVPlayer, didChange rate: Swift.Float, for item: AVFoundation.AVPlayerItem)
-  func playerDidEnterBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
-  func playerDidLeaveBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
-}
-extension KKSPaaS.KKSAVPlayerDelegate {
-  public func player(player: KKSPaaS.KKSAVPlayer, didReceiveCKC loadingRequest: AVFoundation.AVAssetResourceLoadingRequest)
-  public func player(player: KKSPaaS.KKSAVPlayer, didChange rate: Swift.Float, for item: AVFoundation.AVPlayerItem)
-}
-@objc @_inheritsConvenienceInitializers public class KKSAVPlayer : ObjectiveC.NSObject {
-  public var playerLayer: AVFoundation.AVPlayerLayer!
-  weak public var delegate: KKSPaaS.KKSAVPlayerDelegate?
-  public var duration: Foundation.TimeInterval {
-    get
-  }
-  public var currentTime: Foundation.TimeInterval {
-    get
-  }
-  @objc required override dynamic public init()
-  @objc deinit
-  public func setup(video url: Foundation.URL?, preferred resolution: Swift.Int? = nil, completion: @escaping (KKSPaaS.KKSPlayerItem?, Swift.Error?) -> Swift.Void)
-  public func play()
-  public func pause()
-  public func seek(to: Foundation.TimeInterval, completion: @escaping (Swift.Bool) -> Swift.Void)
-  public var isItemReadyToPlay: Swift.Bool {
-    get
-  }
-  public var isMuted: Swift.Bool {
-    get
-    set
-  }
-}
-extension KKSPaaS.KKSAVPlayer : AVFoundation.AVAssetResourceLoaderDelegate {
-  @objc dynamic public func resourceLoader(_ resourceLoader: AVFoundation.AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVFoundation.AVAssetResourceLoadingRequest) -> Swift.Bool
-}
-extension KKSPaaS.KKSAVPlayer {
-  public var selectedSubtitle: AVFoundation.AVMediaSelectionOption? {
-    get
-  }
-  public var selectedAudioTrack: AVFoundation.AVMediaSelectionOption? {
-    get
-  }
-  public func deselectSubtitles()
-  public func selectMedia(option: AVFoundation.AVMediaSelectionOption)
-}
 public struct KKSAssetDownloader {
   public init(userId: Swift.String)
   public func webVttUrl(_ id: Swift.String) -> Foundation.URL
@@ -883,47 +875,6 @@ extension KKSPaaS.AppInfoProtocol {
 extension KKSPaaS.KKSDownloader {
   @discardableResult
   public func requestInfo(item id: Swift.String, parameters: [Swift.String : Swift.String], completion: @escaping (KKSPaaS.Result<KKSPaaS.DownloadInfo, KKSPaaS.PAASError>) -> Swift.Void) -> KKSPaaS.DownloadInfoRequest
-}
-public enum PlayerItemState : Swift.String {
-  case none
-  case end
-  case fail
-  case playbackStalled
-  case errorLog
-  case accessLog
-  public init?(rawValue: Swift.String)
-  public typealias RawValue = Swift.String
-  public var rawValue: Swift.String {
-    get
-  }
-}
-@objc @_inheritsConvenienceInitializers public class KKSPlayerItem : AVFoundation.AVPlayerItem {
-  convenience public init(urlAsset: AVFoundation.AVURLAsset)
-  @objc deinit
-  @available(iOS 7.0, *)
-  @objc override dynamic public init(asset: AVFoundation.AVAsset, automaticallyLoadedAssetKeys: [Swift.String]?)
-}
-extension KKSPaaS.KKSPlayerItem {
-  public var isLicenseExpired: Swift.Bool {
-    get
-  }
-  public var errorLogEventDescription: Swift.String? {
-    get
-  }
-}
-extension AVFoundation.AVPlayerItem {
-  public var selectedSubtitle: AVFoundation.AVMediaSelectionOption? {
-    get
-  }
-  public var selectedAudioTrack: AVFoundation.AVMediaSelectionOption? {
-    get
-  }
-  public var subtitles: [AVFoundation.AVMediaSelectionOption] {
-    get
-  }
-  public var audioTracks: [AVFoundation.AVMediaSelectionOption] {
-    get
-  }
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class GoogleCastManager : ObjectiveC.NSObject {
   public static let shared: KKSPaaS.GoogleCastManager
@@ -1113,6 +1064,52 @@ public struct AppLayerContext {
 extension KKSPaaS.KKSDownloader {
   public func sync(completion: ((Swift.Error?) -> Swift.Void)?)
 }
+public protocol KKSAVPlayerDelegate : AnyObject {
+  func player(player: KKSPaaS.KKSAVPlayer, didChange state: KKSPaaS.PlayerItemState, for item: KKSPaaS.KKSPlayerItem)
+  func player(player: KKSPaaS.KKSAVPlayer, didChange time: Foundation.TimeInterval, duration: Foundation.TimeInterval)
+  func player(player: KKSPaaS.KKSAVPlayer, didReceiveCKC loadingRequest: AVFoundation.AVAssetResourceLoadingRequest)
+  func player(player: KKSPaaS.KKSAVPlayer, didChange status: AVFoundation.AVPlayerItem.Status, for item: AVFoundation.AVPlayerItem)
+  func player(player: KKSPaaS.KKSAVPlayer, didChange rate: Swift.Float, for item: AVFoundation.AVPlayerItem)
+  func playerDidEnterBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
+  func playerDidLeaveBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
+}
+extension KKSPaaS.KKSAVPlayerDelegate {
+  public func player(player: KKSPaaS.KKSAVPlayer, didReceiveCKC loadingRequest: AVFoundation.AVAssetResourceLoadingRequest)
+  public func player(player: KKSPaaS.KKSAVPlayer, didChange rate: Swift.Float, for item: AVFoundation.AVPlayerItem)
+}
+@objc @_inheritsConvenienceInitializers public class KKSAVPlayer : ObjectiveC.NSObject {
+  public var playerLayer: AVFoundation.AVPlayerLayer!
+  weak public var delegate: KKSPaaS.KKSAVPlayerDelegate?
+  public var duration: Foundation.TimeInterval {
+    get
+  }
+  public var currentTime: Foundation.TimeInterval {
+    get
+  }
+  @objc required override dynamic public init()
+  @objc deinit
+  public func setup(video url: Foundation.URL?, preferred resolution: Swift.Int? = nil, completion: @escaping (KKSPaaS.KKSPlayerItem?, Swift.Error?) -> Swift.Void)
+  public func play()
+  public func pause()
+  public func seek(to: Foundation.TimeInterval, completion: @escaping (Swift.Bool) -> Swift.Void)
+  public var isMuted: Swift.Bool {
+    get
+    set
+  }
+}
+extension KKSPaaS.KKSAVPlayer : AVFoundation.AVAssetResourceLoaderDelegate {
+  @objc dynamic public func resourceLoader(_ resourceLoader: AVFoundation.AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVFoundation.AVAssetResourceLoadingRequest) -> Swift.Bool
+}
+extension KKSPaaS.KKSAVPlayer {
+  public var selectedSubtitle: AVFoundation.AVMediaSelectionOption? {
+    get
+  }
+  public var selectedAudioTrack: AVFoundation.AVMediaSelectionOption? {
+    get
+  }
+  public func deselectSubtitles()
+  public func selectMedia(option: AVFoundation.AVMediaSelectionOption)
+}
 @objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class SettingViewController : UIKit.UITableViewController {
   @_Concurrency.MainActor(unsafe) @objc override dynamic public func viewDidLoad()
   @_Concurrency.MainActor(unsafe) @objc override dynamic public func tableView(_ tableView: UIKit.UITableView, didSelectRowAt indexPath: Foundation.IndexPath)
@@ -1198,6 +1195,10 @@ public enum PLLogSeverity : Swift.Int, Swift.CustomStringConvertible {
   @_Concurrency.MainActor(unsafe) public var shouldAutoLoad: Swift.Bool
   @_Concurrency.MainActor(unsafe) public var rotateToPortraitWhenDismiss: (Swift.Bool)
   @_Concurrency.MainActor(unsafe) public var shouldHideStatusBar: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var preferredForwardBufferDuration: Foundation.TimeInterval {
     get
     set
   }
@@ -1506,6 +1507,9 @@ extension KKSPaaS.PlaybackMode : Swift.Hashable {}
 extension KKSPaaS.PlaybackState : Swift.Equatable {}
 extension KKSPaaS.PlaybackState : Swift.Hashable {}
 extension KKSPaaS.PlaybackState : Swift.RawRepresentable {}
+extension KKSPaaS.PlayerItemState : Swift.Equatable {}
+extension KKSPaaS.PlayerItemState : Swift.Hashable {}
+extension KKSPaaS.PlayerItemState : Swift.RawRepresentable {}
 extension KKSPaaS.Logger.EventName : Swift.Equatable {}
 extension KKSPaaS.Logger.EventName : Swift.Hashable {}
 extension KKSPaaS.Logger.EventName : Swift.RawRepresentable {}
@@ -1535,9 +1539,6 @@ extension KKSPaaS.SettingItem.ItemOption : Swift.RawRepresentable {}
 extension KKSPaaS.SettingChangedReason : Swift.Equatable {}
 extension KKSPaaS.SettingChangedReason : Swift.Hashable {}
 extension KKSPaaS.SettingChangedReason : Swift.RawRepresentable {}
-extension KKSPaaS.PlayerItemState : Swift.Equatable {}
-extension KKSPaaS.PlayerItemState : Swift.Hashable {}
-extension KKSPaaS.PlayerItemState : Swift.RawRepresentable {}
 extension KKSPaaS.Asset.DownloadState : Swift.Equatable {}
 extension KKSPaaS.Asset.DownloadState : Swift.Hashable {}
 extension KKSPaaS.Asset.DownloadState : Swift.RawRepresentable {}
