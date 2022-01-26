@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreMedia
 import BlendVisionLoomPlayer
 
 class PlayerToolViewController: UITableViewController {
@@ -78,14 +79,17 @@ extension PlayerToolViewController {
                 .pause,
                 .rewind,
                 .forward,
-                .previous,
-                .next,
+                .previous(viewController: viewController),
+                .next(viewController: viewController),
                 .seek,
+                .mute,
+                .unmute,
                 .showPlaybackControlsAndProgressBar,
                 .hidePlaybackControlsAndProgressBar,
                 .enterFullscreen(viewController: viewController),
                 .exitFullscreen(viewController: viewController),
-                .isBackgroundPlaybackEnabled
+                .isBackgroundPlaybackEnabled,
+                .preferredForwardBufferDuration
             ]
         }
 
@@ -93,14 +97,17 @@ extension PlayerToolViewController {
         case pause
         case rewind
         case forward
-        case previous
-        case next
+        case previous(viewController: UIViewController)
+        case next(viewController: UIViewController)
         case seek
+        case mute
+        case unmute
         case showPlaybackControlsAndProgressBar
         case hidePlaybackControlsAndProgressBar
         case enterFullscreen(viewController: UIViewController)
         case exitFullscreen(viewController: UIViewController)
         case isBackgroundPlaybackEnabled
+        case preferredForwardBufferDuration
 
         var title: String {
             switch self {
@@ -118,6 +125,10 @@ extension PlayerToolViewController {
                 return "next()"
             case .seek:
                 return "seek(to seconds: TimeInterval)"
+            case .mute:
+                return "mute()"
+            case .unmute:
+                return "unmute()"
             case .showPlaybackControlsAndProgressBar:
                 return "showPlaybackControlsAndProgressBar()"
             case .hidePlaybackControlsAndProgressBar:
@@ -128,6 +139,8 @@ extension PlayerToolViewController {
                 return "exitFullscreen()"
             case .isBackgroundPlaybackEnabled:
                 return "isBackgroundPlaybackEnabled"
+            case .preferredForwardBufferDuration:
+                return "preferredForwardBufferDuration"
             }
         }
 
@@ -135,6 +148,8 @@ extension PlayerToolViewController {
             switch self {
             case .isBackgroundPlaybackEnabled:
                 return player.isBackgroundPlaybackEnabled ? "true" : "false"
+            case .preferredForwardBufferDuration:
+                return "\(player.preferredForwardBufferDuration)"
             default:
                 return nil
             }
@@ -153,10 +168,14 @@ extension PlayerToolViewController {
                     player.rewind()
                 case .forward:
                     player.forward()
-                case .previous:
-                    player.previous()
-                case .next:
-                    player.next()
+                case .previous(let viewController):
+                    viewController.dismiss(animated: true, completion: {
+                        player.previous()
+                    })
+                case .next(let viewController):
+                    viewController.dismiss(animated: true, completion: {
+                        player.next()
+                    })
                 case .seek:
                     alertHandler(
                         .textFieldAlert(title: "",
@@ -174,6 +193,10 @@ extension PlayerToolViewController {
                                             player.seek(to: seconds)
                                         })
                     )
+                case .mute:
+                    player.mute()
+                case .unmute:
+                    player.unmute()
                 case .showPlaybackControlsAndProgressBar:
                     player.showPlaybackControlsAndProgressBar()
                 case .hidePlaybackControlsAndProgressBar:
@@ -211,6 +234,33 @@ extension PlayerToolViewController {
                             }),
                             UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
                         ])
+                    )
+                case .preferredForwardBufferDuration:
+                    var bufferedEndTime: String {
+                        guard let avplayer = player.controller.playbackHandler.player.playerLayer.player,
+                              let playingItem = avplayer.currentItem,
+                              let loadedTimeRange = playingItem.loadedTimeRanges.first
+                        else {
+                            return "nil"
+                        }
+                        return CMTimeGetSeconds(loadedTimeRange.timeRangeValue.end).formattedString()
+                    }
+                    alertHandler(
+                        .textFieldAlert(title: "",
+                                        message: title + "\nbuffered till: \(bufferedEndTime)",
+                                        textFieldConfigurationHandler: { textField in
+                                            textField.placeholder = "seconds"
+                                            textField.clearButtonMode = .whileEditing
+                                            textField.keyboardType = .numberPad
+                                        },
+                                        doneActionEnabledPredicate: { !($0 ?? "").isEmpty },
+                                        doneActionHandler: { _, text in
+                                            guard let secondsString = text,
+                                                  let seconds = TimeInterval(secondsString)
+                                            else { return }
+                                            player.preferredForwardBufferDuration = seconds
+                                            reloadHandler()
+                                        })
                     )
                 }
             }
