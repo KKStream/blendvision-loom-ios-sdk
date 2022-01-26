@@ -18,7 +18,7 @@ extension UIAlertController {
 
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: cancelActionHandler)
-        let doneAction = UIAlertAction(title: "Done", style: .default, handler: { alertAction in
+        let doneAction = UIAlertAction(title: "Done", style: .default, handler: { [unowned alert] alertAction in
             guard let textField = alert.textFields?.first else { return }
             doneActionHandler?(alertAction, textField.text)
         })
@@ -45,11 +45,11 @@ extension UIAlertController {
 
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: cancelActionHandler)
-        let doneAction = UIAlertAction(title: "Done", style: .default, handler: { alertAction in
+        let doneAction = UIAlertAction(title: "Done", style: .default, handler: { [unowned alert] alertAction in
             guard let firstTextField = alert.textFields?[0], let secondTextField = alert.textFields?[1] else { return }
             doneActionHandler?(alertAction, firstTextField.text, secondTextField.text)
         })
-        alert.addTextField(configurationHandler: { textField in
+        alert.addTextField(configurationHandler: { [unowned alert] textField in
             firstTextFieldConfigurationHandler?(textField)
 
             var secondText: String? {
@@ -61,7 +61,7 @@ extension UIAlertController {
                 doneAction.isEnabled = doneActionEnabledPredicate?(textField.text, secondText) ?? true
             })
         })
-        alert.addTextField(configurationHandler: { textField in
+        alert.addTextField(configurationHandler: { [unowned alert] textField in
             secondTextFieldConfigurationHandler?(textField)
 
             var firstText: String? {

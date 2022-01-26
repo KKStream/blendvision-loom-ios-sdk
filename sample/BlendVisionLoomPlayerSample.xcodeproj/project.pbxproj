@@ -38,6 +38,8 @@
 		87D49E0E2722CA900012505D /* ShadowVideoContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D49E0B2722CA900012505D /* ShadowVideoContent.swift */; };
 		87D49E0F2722CA900012505D /* LoomPlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D49E0C2722CA900012505D /* LoomPlayerModel.swift */; };
 		87D49E102722CA900012505D /* BarItemActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87D49E0D2722CA900012505D /* BarItemActionHandler.swift */; };
+		A49B763227A17D4E0099EDDD /* BlendVisionLoomPlayer.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49B763127A17D4E0099EDDD /* BlendVisionLoomPlayer.xcframework */; };
+		A49B763427A1823C0099EDDD /* TimeInterval+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49B763327A1823C0099EDDD /* TimeInterval+Formatting.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -88,6 +90,8 @@
 		87D49E0B2722CA900012505D /* ShadowVideoContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowVideoContent.swift; sourceTree = "<group>"; };
 		87D49E0C2722CA900012505D /* LoomPlayerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoomPlayerModel.swift; sourceTree = "<group>"; };
 		87D49E0D2722CA900012505D /* BarItemActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarItemActionHandler.swift; sourceTree = "<group>"; };
+		A49B763127A17D4E0099EDDD /* BlendVisionLoomPlayer.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = BlendVisionLoomPlayer.xcframework; path = ../../frameworks/BlendVisionLoomPlayer.xcframework; sourceTree = "<group>"; };
+		A49B763327A1823C0099EDDD /* TimeInterval+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Formatting.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A49B763227A17D4E0099EDDD /* BlendVisionLoomPlayer.xcframework in Frameworks */,
 				87B07FD92670F2880031EE46 /* KKSPaaS.xcframework in Frameworks */,
 				87B07FD72670F2860031EE46 /* KKSNetwork.xcframework in Frameworks */,
 				87B07FD52670F2850031EE46 /* KKSLocalization.xcframework in Frameworks */,
@@ -146,6 +151,7 @@
 		87B07FC62670F2220031EE46 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A49B763127A17D4E0099EDDD /* BlendVisionLoomPlayer.xcframework */,
 				87B07FCC2670F2780031EE46 /* KKSPaaS.xcframework */,
 				87B07FCA2670F2780031EE46 /* KKSNetwork.xcframework */,
 				87B07FC72670F2780031EE46 /* KKSLocalization.xcframework */,
@@ -197,6 +203,7 @@
 				87D49DFF2722CA080012505D /* UINavigation+Extensions.swift */,
 				87D49DFE2722CA080012505D /* UIAlertController+Extensions.swift */,
 				87D49DFD2722CA080012505D /* UILabel+Copyable.swift */,
+				A49B763327A1823C0099EDDD /* TimeInterval+Formatting.swift */,
 				87D49E012722CA080012505D /* ViewHierarchy.swift */,
 				87D49E002722CA080012505D /* AlertPresentable.swift */,
 			);
@@ -297,6 +304,7 @@
 				87D49DEB2722C9390012505D /* EditPlayerViewController.swift in Sources */,
 				87D49E082722CA080012505D /* ViewHierarchy.swift in Sources */,
 				87D49DEA2722C9390012505D /* EditVideoContentViewController.swift in Sources */,
+				A49B763427A1823C0099EDDD /* TimeInterval+Formatting.swift in Sources */,
 				87D49DE62722C9390012505D /* PlayerToolViewController.swift in Sources */,
 				87D49DEC2722C9390012505D /* SinglePlayerViewController.swift in Sources */,
 				87D49E072722CA080012505D /* AlertPresentable.swift in Sources */,

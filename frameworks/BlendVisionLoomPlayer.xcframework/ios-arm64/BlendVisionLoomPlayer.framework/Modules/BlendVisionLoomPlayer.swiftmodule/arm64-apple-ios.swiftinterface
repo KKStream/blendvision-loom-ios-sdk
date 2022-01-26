@@ -48,6 +48,12 @@ extension BlendVisionLoomPlayer.LoomPlayer {
     set
   }
 }
+extension BlendVisionLoomPlayer.LoomPlayer {
+  final public var preferredForwardBufferDuration: Foundation.TimeInterval {
+    get
+    set
+  }
+}
 public class PlayerContext {
   public enum BarItem : Swift.Equatable {
     case settings

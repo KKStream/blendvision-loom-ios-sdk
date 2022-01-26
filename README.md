@@ -21,7 +21,7 @@ To have a quick look at the features of BlendVisionLoomPlayer SDK, try our sampl
 > **Note**
 > 
 > BlendVisionLoomPlayer will drop support for older OS three months after the latest version is officially released by Apple. 
-> For example, iOS 13 was released on `Sep 19, 2019`, then iOS 10 support would be dropped after `Dec 20, 2019`.   
+> For example, iOS 13 was released on `Sep 19, 2019`, then iOS 10 support would be dropped after `Dec 20, 2019`.
 
 ### Installation
 
@@ -343,4 +343,15 @@ To enable background playback, make sure you turned on the Background Modes capa
 ```swift
 // The default value is `false`.
 player.isBackgroundPlaybackEnabled = true
+```
+
+### Buffering
+
+```swift
+// The duration the player should buffer media from the network ahead of the playhead to guard against playback disruption. The value is 60.0 by default.
+//
+// This property defines the preferred forward buffer duration in seconds. If set to 0, equal to or higher than 60, the player will choose an appropriate level of buffering for most use cases. Setting this property to a low value will increase the chance that playback will stall and re-buffer, while setting it to a high value will increase demand on system resources.
+//
+// - Note: AVPlayer may not fully respect the value. There might be slight deviation from the actual buffer duration.
+player.preferredForwardBufferDuration = 10.0
 ```
