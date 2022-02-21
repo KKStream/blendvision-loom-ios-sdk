@@ -25,13 +25,51 @@ public enum ItemType : Swift.String {
     get
   }
 }
-@_hasMissingDesignatedInitializers public class DownloadInfoRequest : KKSPaaS.NetworkRequest<KKSPaaS.DownloadInfo> {
+@_hasMissingDesignatedInitializers public class DownloadInfoRequest : KKSPaaS.DownloadNetworkRequest<KKSPaaS.DownloadInfo> {
   override public var httpMethod: KKSNetwork.KKSNetworkMethod {
     get
   }
   @objc deinit
 }
-@_hasMissingDesignatedInitializers public class NetworkRequest<T> : KKSNetwork.KKSNetworkRequest where T : Swift.Decodable {
+@_hasMissingDesignatedInitializers public class NetworkRequest<T> where T : Swift.Decodable {
+  public typealias ResponseType = T
+  public var httpHeader: [Swift.String : Swift.String] {
+    get
+  }
+  public var baseURL: Swift.String {
+    get
+  }
+  public var networkClient: KKSNetwork.KKSNetworkClient
+  public var httpMethod: KKSNetwork.KKSNetworkMethod {
+    get
+  }
+  public var endPoint: Swift.String
+  public var urlQueryParameters: [Swift.String : Swift.String]
+  public var bodyParameters: Foundation.Data? {
+    get
+  }
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class PlaybackNetworkRequest<T> where T : Swift.Decodable {
+  public typealias ResponseType = T
+  public var httpHeader: [Swift.String : Swift.String] {
+    get
+  }
+  public var baseURL: Swift.String {
+    get
+  }
+  public var networkClient: KKSNetwork.KKSNetworkClient
+  public var httpMethod: KKSNetwork.KKSNetworkMethod {
+    get
+  }
+  public var endPoint: Swift.String
+  public var urlQueryParameters: [Swift.String : Swift.String]
+  public var bodyParameters: Foundation.Data? {
+    get
+  }
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class DownloadNetworkRequest<T> where T : Swift.Decodable {
   public typealias ResponseType = T
   public var httpHeader: [Swift.String : Swift.String] {
     get
@@ -373,6 +411,14 @@ public struct Video : Swift.Decodable {
   public let title: Swift.String
   public init(from decoder: Swift.Decoder) throws
 }
+public enum AppInfo {
+  public static var moduleVersion: Swift.String {
+    get
+  }
+  public static var deviceID: Swift.String {
+    get
+  }
+}
 @_inheritsConvenienceInitializers @objc(FairPlayEntity) public class FairPlayEntity : CoreData.NSManagedObject {
   @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
   @objc deinit
@@ -514,8 +560,6 @@ public enum BarItemType : Swift.String {
   public static func makeButton(type: KKSPaaS.BarItemType) -> KKSPaaS.BarButtonItem
   public func add(_ subview: UIKit.UIView)
   @objc deinit
-}
-extension KKSPaaS.PlaybackHandler : KKSPaaS.AppInfoProtocol {
 }
 public enum KKSCoreDataError : Swift.Error {
   case existing
@@ -777,6 +821,12 @@ extension KKSPaaS.PlayerViewControllerDelegate {
   public func playerViewController(_ controller: KKSPaaS.PlayerViewController?, didChange resolution: Swift.Int?, for reason: KKSPaaS.SettingChangedReason)
   public func playerViewController(_ controller: KKSPaaS.PlayerViewController?, didChange source: Swift.String, for reason: KKSPaaS.SettingChangedReason)
 }
+extension KKSPaaS.NetworkRequest : KKSNetwork.KKSNetworkRequest {
+}
+extension KKSPaaS.PlaybackNetworkRequest : KKSNetwork.KKSNetworkRequest {
+}
+extension KKSPaaS.DownloadNetworkRequest : KKSNetwork.KKSNetworkRequest {
+}
 public struct SettingItem {
   public enum ItemOption : Swift.Int, Swift.CaseIterable {
     case autoplay, mediaSource, resolution, rate, subtitle, audioTrack
@@ -863,14 +913,6 @@ public typealias VideoEventHandler = ((_ eventName: Swift.String, _ properties: 
   @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
   @_Concurrency.MainActor(unsafe) @objc override dynamic open func layoutSubviews()
   @objc deinit
-}
-public protocol AppInfoProtocol {
-  var moduleVersion: Swift.String { get }
-}
-extension KKSPaaS.AppInfoProtocol {
-  public var moduleVersion: Swift.String {
-    get
-  }
 }
 extension KKSPaaS.KKSDownloader {
   @discardableResult
@@ -1487,7 +1529,7 @@ public struct HLSDownloadManagerConfig {
 extension CoreData.NSManagedObjectModel {
   public func modelName() -> Swift.String?
 }
-public struct MediaItem : KKSPaaS.AppInfoProtocol {
+public struct MediaItem {
 }
 public enum ADBreakEvent : Swift.Int {
   case ADBreakStarted, ADBreakEnded
@@ -1500,8 +1542,6 @@ public enum ADBreakEvent : Swift.Int {
 extension KKSPaaS.ItemType : Swift.Equatable {}
 extension KKSPaaS.ItemType : Swift.Hashable {}
 extension KKSPaaS.ItemType : Swift.RawRepresentable {}
-extension KKSPaaS.DownloadInfoRequest : KKSPaaS.AppInfoProtocol {}
-extension KKSPaaS.NetworkRequest : KKSPaaS.AppInfoProtocol {}
 extension KKSPaaS.PlaybackMode : Swift.Equatable {}
 extension KKSPaaS.PlaybackMode : Swift.Hashable {}
 extension KKSPaaS.PlaybackState : Swift.Equatable {}
