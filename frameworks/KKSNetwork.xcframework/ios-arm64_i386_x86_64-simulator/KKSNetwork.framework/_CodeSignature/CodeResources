@@ -14,31 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		2ua4wpG8B6p2/kRNiptKNw1Ngto=
-		</data>
-		<key>Modules/KKSNetwork.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
-		<data>
-		ddROpbWYXXXDk0/vZ89/HdWqVN4=
-		</data>
-		<key>Modules/KKSNetwork.swiftmodule/Project/arm64.swiftsourceinfo</key>
-		<data>
-		ddROpbWYXXXDk0/vZ89/HdWqVN4=
-		</data>
-		<key>Modules/KKSNetwork.swiftmodule/Project/i386-apple-ios-simulator.swiftsourceinfo</key>
-		<data>
-		b5NCqAZ8RMIDp+TaY7HgiNRrLQI=
-		</data>
-		<key>Modules/KKSNetwork.swiftmodule/Project/i386.swiftsourceinfo</key>
-		<data>
-		b5NCqAZ8RMIDp+TaY7HgiNRrLQI=
-		</data>
-		<key>Modules/KKSNetwork.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
-		<data>
-		BQ8WSfKJeQwSIGKtWiBrctr9QgI=
-		</data>
-		<key>Modules/KKSNetwork.swiftmodule/Project/x86_64.swiftsourceinfo</key>
-		<data>
-		BQ8WSfKJeQwSIGKtWiBrctr9QgI=
+		j7CjSSdvDB81SwbyzPKGS4JoAuM=
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -50,7 +26,7 @@
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		EIGRWEqArLqAsSMKwyPyJs2tEqs=
+		ZgnhxFZfH2X22ELipSqfITMcCys=
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/arm64.swiftdoc</key>
 		<data>
@@ -62,7 +38,7 @@
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		EIGRWEqArLqAsSMKwyPyJs2tEqs=
+		ZgnhxFZfH2X22ELipSqfITMcCys=
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/i386-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -74,7 +50,7 @@
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/i386-apple-ios-simulator.swiftmodule</key>
 		<data>
-		T13TjoKLTY65GURZohqCBn/hUtY=
+		mSkBx6tLgFnMGeE+y1tXhIWpXd4=
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/i386.swiftdoc</key>
 		<data>
@@ -86,7 +62,7 @@
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/i386.swiftmodule</key>
 		<data>
-		T13TjoKLTY65GURZohqCBn/hUtY=
+		mSkBx6tLgFnMGeE+y1tXhIWpXd4=
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -98,7 +74,7 @@
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		R+bEqyMdNSFWECl7jovJ8bXhQKw=
+		guCIQn+mI16oCm38wfNmtMF/x2k=
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -110,7 +86,7 @@
 		</data>
 		<key>Modules/KKSNetwork.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		R+bEqyMdNSFWECl7jovJ8bXhQKw=
+		guCIQn+mI16oCm38wfNmtMF/x2k=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -141,72 +117,6 @@
 			+iIwWdJMXo0Bn+fo1buxPOrTE93doFiPVErl0DYl+28=
 			</data>
 		</dict>
-		<key>Modules/KKSNetwork.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			ddROpbWYXXXDk0/vZ89/HdWqVN4=
-			</data>
-			<key>hash2</key>
-			<data>
-			Eroqyt4MnqUKwMj96/BACoVQiV4e+9ermkx3KcmU5bY=
-			</data>
-		</dict>
-		<key>Modules/KKSNetwork.swiftmodule/Project/arm64.swiftsourceinfo</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			ddROpbWYXXXDk0/vZ89/HdWqVN4=
-			</data>
-			<key>hash2</key>
-			<data>
-			Eroqyt4MnqUKwMj96/BACoVQiV4e+9ermkx3KcmU5bY=
-			</data>
-		</dict>
-		<key>Modules/KKSNetwork.swiftmodule/Project/i386-apple-ios-simulator.swiftsourceinfo</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			b5NCqAZ8RMIDp+TaY7HgiNRrLQI=
-			</data>
-			<key>hash2</key>
-			<data>
-			/OwjklyFvKnoByBuI1y7fI/cJ3SfYp78R5G27RvGANg=
-			</data>
-		</dict>
-		<key>Modules/KKSNetwork.swiftmodule/Project/i386.swiftsourceinfo</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			b5NCqAZ8RMIDp+TaY7HgiNRrLQI=
-			</data>
-			<key>hash2</key>
-			<data>
-			/OwjklyFvKnoByBuI1y7fI/cJ3SfYp78R5G27RvGANg=
-			</data>
-		</dict>
-		<key>Modules/KKSNetwork.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			BQ8WSfKJeQwSIGKtWiBrctr9QgI=
-			</data>
-			<key>hash2</key>
-			<data>
-			e2D2Rxma7/aBdy3Rwrmnz281MYABdYejda2kf0y+XJ8=
-			</data>
-		</dict>
-		<key>Modules/KKSNetwork.swiftmodule/Project/x86_64.swiftsourceinfo</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			BQ8WSfKJeQwSIGKtWiBrctr9QgI=
-			</data>
-			<key>hash2</key>
-			<data>
-			e2D2Rxma7/aBdy3Rwrmnz281MYABdYejda2kf0y+XJ8=
-			</data>
-		</dict>
 		<key>Modules/KKSNetwork.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash</key>
@@ -233,11 +143,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			EIGRWEqArLqAsSMKwyPyJs2tEqs=
+			ZgnhxFZfH2X22ELipSqfITMcCys=
 			</data>
 			<key>hash2</key>
 			<data>
-			da2CQrX8Doe2GL0oPXSIYYvpNtBB23SjyrmFaNxDNWA=
+			vNGlJ4tLza37FXe40xVq1OgZ8SHwXicrVKM/1WC4Kv4=
 			</data>
 		</dict>
 		<key>Modules/KKSNetwork.swiftmodule/arm64.swiftdoc</key>
@@ -266,11 +176,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			EIGRWEqArLqAsSMKwyPyJs2tEqs=
+			ZgnhxFZfH2X22ELipSqfITMcCys=
 			</data>
 			<key>hash2</key>
 			<data>
-			da2CQrX8Doe2GL0oPXSIYYvpNtBB23SjyrmFaNxDNWA=
+			vNGlJ4tLza37FXe40xVq1OgZ8SHwXicrVKM/1WC4Kv4=
 			</data>
 		</dict>
 		<key>Modules/KKSNetwork.swiftmodule/i386-apple-ios-simulator.swiftdoc</key>
@@ -299,11 +209,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			T13TjoKLTY65GURZohqCBn/hUtY=
+			mSkBx6tLgFnMGeE+y1tXhIWpXd4=
 			</data>
 			<key>hash2</key>
 			<data>
-			r/NdlpKWDwnEFb7+f43p6YG0TiZUDg1r7j0v4gyKbEc=
+			0B12QGUsFF7/GgV7SXwo2CHn3+7vAcgvi3gc+M8arfM=
 			</data>
 		</dict>
 		<key>Modules/KKSNetwork.swiftmodule/i386.swiftdoc</key>
@@ -332,11 +242,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			T13TjoKLTY65GURZohqCBn/hUtY=
+			mSkBx6tLgFnMGeE+y1tXhIWpXd4=
 			</data>
 			<key>hash2</key>
 			<data>
-			r/NdlpKWDwnEFb7+f43p6YG0TiZUDg1r7j0v4gyKbEc=
+			0B12QGUsFF7/GgV7SXwo2CHn3+7vAcgvi3gc+M8arfM=
 			</data>
 		</dict>
 		<key>Modules/KKSNetwork.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
@@ -365,11 +275,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			R+bEqyMdNSFWECl7jovJ8bXhQKw=
+			guCIQn+mI16oCm38wfNmtMF/x2k=
 			</data>
 			<key>hash2</key>
 			<data>
-			8qj38YJ4vUBcM7GmgtqSyk2G97z3Z7w/LHPM8hAIoMQ=
+			XmPMhU/vILFS65mKP+ZHfUAmPw0AxfARGHQpAjmlrPM=
 			</data>
 		</dict>
 		<key>Modules/KKSNetwork.swiftmodule/x86_64.swiftdoc</key>
@@ -398,11 +308,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			R+bEqyMdNSFWECl7jovJ8bXhQKw=
+			guCIQn+mI16oCm38wfNmtMF/x2k=
 			</data>
 			<key>hash2</key>
 			<data>
-			8qj38YJ4vUBcM7GmgtqSyk2G97z3Z7w/LHPM8hAIoMQ=
+			XmPMhU/vILFS65mKP+ZHfUAmPw0AxfARGHQpAjmlrPM=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
