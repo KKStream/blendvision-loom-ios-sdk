@@ -433,7 +433,6 @@ SWIFT_CLASS("_TtC7KKSPaaS10PlayerView")
 
 SWIFT_CLASS("_TtC7KKSPaaS20PlayerViewController")
 @interface PlayerViewController : UIViewController
-- (void)viewDidLoad;
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent * _Nullable)event;
 @property (nonatomic, readonly) BOOL prefersStatusBarHidden;
 @property (nonatomic, readonly) UIStatusBarStyle preferredStatusBarStyle;
@@ -444,6 +443,12 @@ SWIFT_CLASS("_TtC7KKSPaaS20PlayerViewController")
 
 
 
+@protocol UIViewControllerTransitionCoordinator;
+
+@interface PlayerViewController (SWIFT_EXTENSION(KKSPaaS))
+- (void)viewDidLoad;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator> _Nonnull)coordinator;
+@end
 
 
 @class AVPictureInPictureController;
@@ -458,12 +463,12 @@ SWIFT_CLASS("_TtC7KKSPaaS20PlayerViewController")
 
 
 
-@protocol UIViewControllerTransitionCoordinator;
+
 
 @interface PlayerViewController (SWIFT_EXTENSION(KKSPaaS))
 - (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^ _Nullable)(void))completion;
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator> _Nonnull)coordinator;
 @end
+
 
 
 

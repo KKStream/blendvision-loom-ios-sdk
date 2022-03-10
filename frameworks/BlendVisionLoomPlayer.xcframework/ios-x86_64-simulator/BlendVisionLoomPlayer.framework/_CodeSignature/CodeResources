@@ -14,31 +14,31 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		1H1SgOYTpn7X76mWSxsLMcb2jFA=
+		jTa8nL+9XqcN7xTGmP/vnQ/RQlU=
 		</data>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		j4aQH9vJzmsjxCcKFS7+27yNmZA=
+		51NZ2DnbzC6qe/o+dUqk4K+OHR4=
 		</data>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		XENLBkkdi3nNGwpfUZ5JQqqtukA=
+		ngNIOAzGLhTwQpAouTVLDxNCOyQ=
 		</data>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		6kEKrJNH79pvMsL05Fb+k4j0p98=
+		yRcyFx2+V06MO815pLGOd5mx1uc=
 		</data>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64.swiftdoc</key>
 		<data>
-		j4aQH9vJzmsjxCcKFS7+27yNmZA=
+		51NZ2DnbzC6qe/o+dUqk4K+OHR4=
 		</data>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64.swiftinterface</key>
 		<data>
-		XENLBkkdi3nNGwpfUZ5JQqqtukA=
+		ngNIOAzGLhTwQpAouTVLDxNCOyQ=
 		</data>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		6kEKrJNH79pvMsL05Fb+k4j0p98=
+		yRcyFx2+V06MO815pLGOd5mx1uc=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -65,42 +65,42 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			EYFWFOsk1vFmU0OTg+LVdpxSxmCyJSc1GaJoXaiu/58=
+			HV1Rku+AsFB2S7GXdsykuXBd5ZfqiwfZDOzyMF1LQUc=
 			</data>
 		</dict>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			G9zH+4x+ambqJ7DWMqP7BloyQqej6JZ/CpuypA/1aJ4=
+			SXu4FxEs8s9DeeVXBd1RFzXKWnSKg8tEz6+Oc7i6Mdg=
 			</data>
 		</dict>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			cwrw+f56BOnwNja21D2CeEshB6pbBhz+LDmRfU32deM=
+			eAE+RhQuwQYIug60MGqDUE9Fxns7bVcPARE6QF0HIl4=
 			</data>
 		</dict>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			EYFWFOsk1vFmU0OTg+LVdpxSxmCyJSc1GaJoXaiu/58=
+			HV1Rku+AsFB2S7GXdsykuXBd5ZfqiwfZDOzyMF1LQUc=
 			</data>
 		</dict>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			G9zH+4x+ambqJ7DWMqP7BloyQqej6JZ/CpuypA/1aJ4=
+			SXu4FxEs8s9DeeVXBd1RFzXKWnSKg8tEz6+Oc7i6Mdg=
 			</data>
 		</dict>
 		<key>Modules/BlendVisionLoomPlayer.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			cwrw+f56BOnwNja21D2CeEshB6pbBhz+LDmRfU32deM=
+			eAE+RhQuwQYIug60MGqDUE9Fxns7bVcPARE6QF0HIl4=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
