@@ -640,6 +640,7 @@ extension KKSPaaS.PlaybackHandler : KKSPaaS.KKSAVPlayerDelegate {
   public func player(player: KKSPaaS.KKSAVPlayer, didChange state: KKSPaaS.PlayerItemState, for item: KKSPaaS.KKSPlayerItem)
   public func player(player: KKSPaaS.KKSAVPlayer, didChange rate: Swift.Float, for item: AVFoundation.AVPlayerItem)
   public func player(player: KKSPaaS.KKSAVPlayer, didChange status: AVFoundation.AVPlayerItem.Status, for item: AVFoundation.AVPlayerItem)
+  public func player(player: KKSPaaS.KKSAVPlayer, didChangeLoadedTimeRanges loadedTimeRanges: [CoreMedia.CMTimeRange], for item: AVFoundation.AVPlayerItem)
   public func playerDidEnterBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
   public func playerDidLeaveBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
 }
@@ -898,6 +899,25 @@ public typealias VideoEventHandler = ((_ eventName: Swift.String, _ properties: 
   public var player: KKSPaaS.KKSAVPlayer!
   @objc deinit
 }
+extension KKSPaaS.PlayerViewController {
+  @_Concurrency.MainActor(unsafe) public var preferredForwardBufferDuration: Foundation.TimeInterval {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var enablePictureInPicture: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public var enableBackgroundPlayback: Swift.Bool {
+    get
+    set
+  }
+  @_Concurrency.MainActor(unsafe) public func swipeDownRecommendationPanel()
+  @_Concurrency.MainActor(unsafe) public func swipeUpRecommendationPanel()
+  @_Concurrency.MainActor(unsafe) public func showControlPanel(_ needToShow: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) public func lockControlPanel(_ lock: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) public func setMute(_ isMute: Swift.Bool)
+}
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) open class PaaSSliderPanel : UIKit.UIView {
   @_Concurrency.MainActor(unsafe) open var gradientView: KKSPaaS.PaaSGradientView {
     get
@@ -906,6 +926,7 @@ public typealias VideoEventHandler = ((_ eventName: Swift.String, _ properties: 
   @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
   @_Concurrency.MainActor(unsafe) public func update(currentTime: Foundation.TimeInterval, duration: Foundation.TimeInterval)
   @_Concurrency.MainActor(unsafe) public func update(track value: Swift.Float)
+  @_Concurrency.MainActor(unsafe) public func update(buffer value: Swift.Float)
   @_Concurrency.MainActor(unsafe) public func update(currentTime: Foundation.TimeInterval)
   @objc deinit
 }
@@ -1112,12 +1133,14 @@ public protocol KKSAVPlayerDelegate : AnyObject {
   func player(player: KKSPaaS.KKSAVPlayer, didReceiveCKC loadingRequest: AVFoundation.AVAssetResourceLoadingRequest)
   func player(player: KKSPaaS.KKSAVPlayer, didChange status: AVFoundation.AVPlayerItem.Status, for item: AVFoundation.AVPlayerItem)
   func player(player: KKSPaaS.KKSAVPlayer, didChange rate: Swift.Float, for item: AVFoundation.AVPlayerItem)
+  func player(player: KKSPaaS.KKSAVPlayer, didChangeLoadedTimeRanges loadedTimeRanges: [CoreMedia.CMTimeRange], for item: AVFoundation.AVPlayerItem)
   func playerDidEnterBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
   func playerDidLeaveBuffering(player: KKSPaaS.KKSAVPlayer, for item: AVFoundation.AVPlayerItem)
 }
 extension KKSPaaS.KKSAVPlayerDelegate {
   public func player(player: KKSPaaS.KKSAVPlayer, didReceiveCKC loadingRequest: AVFoundation.AVAssetResourceLoadingRequest)
   public func player(player: KKSPaaS.KKSAVPlayer, didChange rate: Swift.Float, for item: AVFoundation.AVPlayerItem)
+  public func player(player: KKSPaaS.KKSAVPlayer, didChangeLoadedTimeRanges loadedTimeRanges: [CoreMedia.CMTimeRange], for item: AVFoundation.AVPlayerItem)
 }
 @objc @_inheritsConvenienceInitializers public class KKSAVPlayer : ObjectiveC.NSObject {
   public var playerLayer: AVFoundation.AVPlayerLayer!
@@ -1240,17 +1263,14 @@ public enum PLLogSeverity : Swift.Int, Swift.CustomStringConvertible {
     get
     set
   }
-  @_Concurrency.MainActor(unsafe) public var preferredForwardBufferDuration: Foundation.TimeInterval {
+  @_Concurrency.MainActor(unsafe) public var buffered: Foundation.TimeInterval {
     get
-    set
   }
-  @_Concurrency.MainActor(unsafe) public var enablePictureInPicture: Swift.Bool {
+  @_Concurrency.MainActor(unsafe) public var duration: Foundation.TimeInterval {
     get
-    set
   }
-  @_Concurrency.MainActor(unsafe) public var enableBackgroundPlayback: Swift.Bool {
+  @_Concurrency.MainActor(unsafe) public var position: Foundation.TimeInterval {
     get
-    set
   }
   @_Concurrency.MainActor(unsafe) public var videoEventHandler: KKSPaaS.VideoEventHandler? {
     get
@@ -1271,7 +1291,6 @@ public enum PLLogSeverity : Swift.Int, Swift.CustomStringConvertible {
   @_Concurrency.MainActor(unsafe) convenience public init(with appLayerContext: KKSPaaS.AppLayerContext)
   @_Concurrency.MainActor(unsafe) convenience public init(withVideo model: KKSPaaS.VideoModel?, settingConfig: KKSPaaS.SettingConfig? = nil)
   @objc deinit
-  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidLoad()
   @_Concurrency.MainActor(unsafe) @objc override dynamic open func motionEnded(_ motion: UIKit.UIEvent.EventSubtype, with event: UIKit.UIEvent?)
   @_Concurrency.MainActor(unsafe) @objc override dynamic open var prefersStatusBarHidden: Swift.Bool {
     @_Concurrency.MainActor(unsafe) @objc get
@@ -1286,19 +1305,17 @@ public enum PLLogSeverity : Swift.Int, Swift.CustomStringConvertible {
   @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder: Foundation.NSCoder)
 }
 extension KKSPaaS.PlayerViewController {
-  @_Concurrency.MainActor(unsafe) @objc override dynamic open func dismiss(animated flag: Swift.Bool, completion: (() -> Swift.Void)? = nil)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewDidLoad()
   @_Concurrency.MainActor(unsafe) @objc override dynamic open func viewWillTransition(to size: CoreGraphics.CGSize, with coordinator: UIKit.UIViewControllerTransitionCoordinator)
+}
+extension KKSPaaS.PlayerViewController {
+  @_Concurrency.MainActor(unsafe) @objc override dynamic open func dismiss(animated flag: Swift.Bool, completion: (() -> Swift.Void)? = nil)
 }
 extension KKSPaaS.PlayerViewController {
   @_Concurrency.MainActor(unsafe) public func set(videoModel: KKSPaaS.VideoModel)
   @_Concurrency.MainActor(unsafe) public func changeContent(with id: Swift.String?)
   @_Concurrency.MainActor(unsafe) public func load()
   @_Concurrency.MainActor(unsafe) public func restart()
-  @_Concurrency.MainActor(unsafe) public func swipeDownRecommendationPanel()
-  @_Concurrency.MainActor(unsafe) public func swipeUpRecommendationPanel()
-  @_Concurrency.MainActor(unsafe) public func showControlPanel(_ needToShow: Swift.Bool)
-  @_Concurrency.MainActor(unsafe) public func lockControlPanel(_ lock: Swift.Bool)
-  @_Concurrency.MainActor(unsafe) public func setMute(_ isMute: Swift.Bool)
 }
 extension KKSPaaS.PlayerViewController {
   @_Concurrency.MainActor(unsafe) public func setupDAI(adsLoader: GoogleInteractiveMediaAds.IMAAdsLoader)
@@ -1312,7 +1329,8 @@ extension KKSPaaS.PlayerViewController {
 }
 @_hasMissingDesignatedInitializers public class UIStyleSlider {
   public var minimumTrackTintColor: UIKit.UIColor
-  public var maxmumTrackTintColor: UIKit.UIColor
+  public var maximumTrackTintColor: UIKit.UIColor
+  public var bufferTrackTintColor: UIKit.UIColor
   @objc deinit
 }
 @_hasMissingDesignatedInitializers public class UIStyleIndicator {

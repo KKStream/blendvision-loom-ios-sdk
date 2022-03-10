@@ -54,6 +54,17 @@ extension BlendVisionLoomPlayer.LoomPlayer {
     set
   }
 }
+extension BlendVisionLoomPlayer.LoomPlayer {
+  final public var position: Foundation.TimeInterval {
+    get
+  }
+  final public var duration: Foundation.TimeInterval {
+    get
+  }
+  final public var buffered: Foundation.TimeInterval {
+    get
+  }
+}
 public class PlayerContext {
   public enum BarItem : Swift.Equatable {
     case settings
