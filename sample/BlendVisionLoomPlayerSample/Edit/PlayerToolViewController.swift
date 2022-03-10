@@ -13,12 +13,24 @@ import BlendVisionLoomPlayer
 class PlayerToolViewController: UITableViewController {
     let cellIdentifier = "PlayerToolCellIdentifier"
 
+    private var timer: Timer?
+
     lazy var rows = Row.allCases(in: self)
     unowned let player: LoomPlayer
+
+    deinit {
+        timer?.invalidate()
+        timer = nil
+    }
 
     init(player: LoomPlayer) {
         self.player = player
         super.init(nibName: nil, bundle: nil)
+
+        // schedule timer
+        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { [weak self] _ in
+            self?.tableView.reloadData()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -48,6 +60,10 @@ class PlayerToolViewController: UITableViewController {
         cell.textLabel?.text = row.title
         cell.detailTextLabel?.text = row.detail(for: player)
 
+        // make detail text label monospaced but also respect Dynamic Type accessibility size
+        if let font = cell.detailTextLabel?.font {
+            cell.detailTextLabel?.font = .monospacedDigitSystemFont(ofSize: font.pointSize, weight: .regular)
+        }
         return cell
     }
 
@@ -75,6 +91,9 @@ extension PlayerToolViewController {
     enum Row {
         static func allCases(in viewController: UIViewController) -> [Row] {
             [
+                .position,
+                .duration,
+                .buffered,
                 .play,
                 .pause,
                 .rewind,
@@ -108,6 +127,9 @@ extension PlayerToolViewController {
         case exitFullscreen(viewController: UIViewController)
         case isBackgroundPlaybackEnabled
         case preferredForwardBufferDuration
+        case position
+        case duration
+        case buffered
 
         var title: String {
             switch self {
@@ -141,6 +163,12 @@ extension PlayerToolViewController {
                 return "isBackgroundPlaybackEnabled"
             case .preferredForwardBufferDuration:
                 return "preferredForwardBufferDuration"
+            case .position:
+                return "position"
+            case .duration:
+                return "duration"
+            case .buffered:
+                return "buffered"
             }
         }
 
@@ -150,6 +178,12 @@ extension PlayerToolViewController {
                 return player.isBackgroundPlaybackEnabled ? "true" : "false"
             case .preferredForwardBufferDuration:
                 return "\(player.preferredForwardBufferDuration)"
+            case .position:
+                return "\(player.position) (\(player.position.formattedString()))"
+            case .duration:
+                return "\(player.duration) (\(player.duration.formattedString()))"
+            case .buffered:
+                return "\(player.buffered) (\(player.buffered.formattedString()))"
             default:
                 return nil
             }
@@ -236,18 +270,9 @@ extension PlayerToolViewController {
                         ])
                     )
                 case .preferredForwardBufferDuration:
-                    var bufferedEndTime: String {
-                        guard let avplayer = player.controller.playbackHandler.player.playerLayer.player,
-                              let playingItem = avplayer.currentItem,
-                              let loadedTimeRange = playingItem.loadedTimeRanges.first
-                        else {
-                            return "nil"
-                        }
-                        return CMTimeGetSeconds(loadedTimeRange.timeRangeValue.end).formattedString()
-                    }
                     alertHandler(
                         .textFieldAlert(title: "",
-                                        message: title + "\nbuffered till: \(bufferedEndTime)",
+                                        message: title,
                                         textFieldConfigurationHandler: { textField in
                                             textField.placeholder = "seconds"
                                             textField.clearButtonMode = .whileEditing
@@ -262,6 +287,8 @@ extension PlayerToolViewController {
                                             reloadHandler()
                                         })
                     )
+                case .position, .duration, .buffered:
+                    break
                 }
             }
         }
